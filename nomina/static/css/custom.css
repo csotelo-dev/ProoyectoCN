@@ -786,63 +786,175 @@ body {
 
 .h-100 { height: 100%; }
 
-/* ── LOGIN ───────────────────────────────────────────────────────────── */
+/* ── LOGIN (Split-screen flexbox) ─────────────────────────────────────── */
 
-.login-wrapper {
+.login-page {
+  display: flex;
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+}
+
+.login-left {
+  flex: 1;
   background: var(--sidebar-bg);
-}
-
-.login-card {
-  background: #fff;
-  border-radius: var(--radius-lg);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-  padding: 44px 36px;
-  width: 400px;
-}
-
-.login-card .logo-mark {
-  width: 48px;
-  height: 48px;
-  background: var(--accent);
-  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
-  color: #fff;
-  margin: 0 auto 14px;
+  padding: 60px;
 }
 
-.login-card h3 {
-  font-size: 20px;
+.login-left-content {
+  max-width: 420px;
+  color: #fff;
+}
+
+.login-brand-icon {
+  width: 52px;
+  height: 52px;
+  background: var(--accent);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 24px;
+}
+
+.login-left-content h1 {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+}
+
+.login-left-content > p {
+  font-size: 15px;
+  color: var(--sidebar-text);
+  line-height: 1.6;
+  margin-bottom: 36px;
+}
+
+.login-features {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #cbd5e1;
+}
+
+.login-feature i {
+  font-size: 18px;
+  color: var(--accent);
+  width: 22px;
+  text-align: center;
+}
+
+.login-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  background: #fff;
+}
+
+.login-form-wrapper {
+  width: 100%;
+  max-width: 380px;
+}
+
+.login-form-wrapper h2 {
+  font-size: 24px;
   font-weight: 700;
   color: var(--text-dark);
-  text-align: center;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
-.login-card .login-subtitle {
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 13px;
-  margin-bottom: 28px;
-}
-
-.login-card .btn-primary {
-  width: 100%;
-  padding: 10px;
+.login-form-sub {
   font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 32px;
 }
 
-.login-footer {
-  text-align: center;
-  margin-top: 20px;
-  color: var(--sidebar-text);
-  font-size: 11px;
+.login-error {
+  background: var(--danger-light);
+  color: var(--danger);
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-left: 3px solid var(--danger);
+}
+
+.login-field {
+  margin-bottom: 20px;
+}
+
+.login-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 6px;
+}
+
+.login-field input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text-dark);
+  transition: var(--transition);
+  background: #fff;
+}
+
+.login-field input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.login-field input::placeholder {
+  color: var(--text-light);
+}
+
+.login-submit {
+  width: 100%;
+  padding: 11px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 8px;
+}
+
+.login-submit:hover {
+  background: var(--primary-dark);
+}
+
+@media (max-width: 768px) {
+  .login-page { flex-direction: column; }
+  .login-left { padding: 40px 24px; }
+  .login-right { padding: 40px 24px; }
 }
 
 /* ── ANIMATIONS (sutiles) ────────────────────────────────────────────── */
