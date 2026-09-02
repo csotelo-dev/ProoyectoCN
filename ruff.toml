@@ -1,0 +1,13 @@
+# Configuracion de Ruff — Linter y Formatter Python
+target-version = "py312"
+line-length = 120
+exclude = ["*/migrations/*"]
+
+[lint]
+select = ["E", "F", "W", "I", "N", "S", "B", "A", "C4", "T20"]
+ignore = ["S101"]  # Permitir assert en tests
+
+[lint.per-file-ignores]
+"*/tests.py" = ["S106"]
+"*/conftest.py" = ["S106"]
+"scripts/*" = ["T20", "S106"]

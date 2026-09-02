@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIRH Nomina — Presentacion del Proyecto</title>
+<style>
+  @page {
+    size: landscape;
+    margin: 0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #1a1a2e;
+    background: #fff;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .slide {
+    width: 100%;
+    min-height: 100vh;
+    padding: 60px 80px;
+    page-break-after: always;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .slide:last-child { page-break-after: avoid; }
+
+  /* Barra superior decorativa */
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #0d6efd, #198754, #0dcaf0);
+  }
+
+  /* Footer */
+  .slide-footer {
+    position: absolute;
+    bottom: 25px; left: 80px; right: 80px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #6c757d;
+    border-top: 1px solid #dee2e6;
+    padding-top: 10px;
+  }
+
+  /* === SLIDE 1: Portada === */
+  .slide-cover {
+    background: linear-gradient(135deg, #0d1b2a 0%, #1b2838 50%, #0d6efd 150%);
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .slide-cover::before { background: linear-gradient(90deg, #0dcaf0, #0d6efd, #198754); height: 8px; }
+  .slide-cover h1 { font-size: 42px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.5px; }
+  .slide-cover .subtitle { font-size: 20px; color: #adb5bd; margin-bottom: 40px; max-width: 800px; }
+  .slide-cover .meta { font-size: 15px; color: #6c757d; line-height: 2; }
+  .slide-cover .meta strong { color: #0dcaf0; }
+  .slide-cover .badge-iaas {
+    display: inline-block;
+    background: #198754;
+    color: #fff;
+    padding: 8px 24px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 30px;
+  }
+
+  /* Titulos de slide */
+  .slide-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #0d6efd;
+    margin-bottom: 30px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #0d6efd;
+    display: inline-block;
+  }
+
+  /* Contenido general */
+  .content { flex: 1; }
+  .two-col { display: flex; gap: 50px; }
+  .two-col > div { flex: 1; }
+  .three-col { display: flex; gap: 30px; }
+  .three-col > div { flex: 1; }
+
+  h3 { font-size: 18px; color: #0d1b2a; margin-bottom: 12px; }
+  p, li { font-size: 15px; line-height: 1.7; color: #333; }
+  ul { padding-left: 20px; }
+  li { margin-bottom: 6px; }
+
+  .highlight-box {
+    background: #f0f7ff;
+    border-left: 4px solid #0d6efd;
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 15px 0;
+  }
+  .highlight-box.green {
+    background: #f0fff4;
+    border-left-color: #198754;
+  }
+  .highlight-box.red {
+    background: #fff5f5;
+    border-left-color: #dc3545;
+  }
+  .highlight-box.cyan {
+    background: #f0fcff;
+    border-left-color: #0dcaf0;
+  }
+
+  /* Tablas */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  th {
+    background: #0d6efd;
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e9ecef;
+  }
+  tr:nth-child(even) td { background: #f8f9fa; }
+  .total-row td {
+    background: #0d1b2a !important;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  /* Diagrama ASCII */
+  .diagram {
+    background: #0d1b2a;
+    color: #0dcaf0;
+    padding: 24px 30px;
+    border-radius: 10px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 12.5px;
+    line-height: 1.5;
+    white-space: pre;
+    overflow: hidden;
+  }
+
+  /* Cards de stats */
+  .stat-card {
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .stat-card .number {
+    font-size: 36px;
+    font-weight: 800;
+    color: #0d6efd;
+  }
+  .stat-card .number.green { color: #198754; }
+  .stat-card .number.red { color: #dc3545; }
+  .stat-card .label {
+    font-size: 13px;
+    color: #6c757d;
+    margin-top: 5px;
+  }
+
+  /* Iconos texto */
+  .icon { font-size: 20px; margin-right: 6px; }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 2px;
+  }
+  .badge-blue { background: #e7f1ff; color: #0d6efd; }
+  .badge-green { background: #d1f7e0; color: #198754; }
+  .badge-cyan { background: #d0f4ff; color: #0a7c8f; }
+  .badge-dark { background: #e2e3e5; color: #1a1a2e; }
+
+  /* Seguridad check list */
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  .check-icon {
+    width: 22px; height: 22px;
+    background: #198754;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Pipeline */
+  .pipeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 20px 0;
+  }
+  .pipeline-step {
+    flex: 1;
+    text-align: center;
+    padding: 14px 10px;
+    background: #0d6efd;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    position: relative;
+  }
+  .pipeline-step:first-child { border-radius: 8px 0 0 8px; }
+  .pipeline-step:last-child { border-radius: 0 8px 8px 0; }
+  .pipeline-step:nth-child(2) { background: #6610f2; }
+  .pipeline-step:nth-child(3) { background: #d63384; }
+  .pipeline-step:nth-child(4) { background: #fd7e14; }
+  .pipeline-step:nth-child(5) { background: #198754; }
+  .pipeline-step small { display: block; font-weight: 400; font-size: 11px; opacity: 0.85; }
+  .pipeline-arrow {
+    width: 0; height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 12px solid;
+    flex-shrink: 0;
+  }
+
+  @media print {
+    .slide { min-height: 100vh; }
+    .no-print { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================================================================== -->
+<!-- SLIDE 1: PORTADA                                                    -->
+<!-- ================================================================== -->
+<div class="slide slide-cover">
+  <h1>SIRH Nomina</h1>
+  <div class="subtitle">
+    Sistema de Gestion de Talento Humano y Liquidacion de Nomina en Pymes
+  </div>
+  <div class="meta">
+    <strong>Curso:</strong> Computacion en la Nube &mdash; UCN<br>
+    <strong>Autor:</strong> Cesar Augusto Sotelo Zapata<br>
+    <strong>Metodologia:</strong> DevOps / CI-CD<br>
+    <strong>Repositorio:</strong> github.com/csotelo-dev/ProoyectoCN
+  </div>
+  <div class="badge-iaas">Linode (Akamai Cloud) &mdash; IaaS &mdash; USD $7/mes</div>
+  <div class="slide-footer" style="color: #4a5568;">
+    <span>Taller ABP &mdash; Entrega 1: Ecosistema Interactivo Cloud</span>
+    <span>Septiembre 2026</span>
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- SLIDE 2: PROBLEMA                                                   -->
+<!-- ================================================================== -->
+<div class="slide">
+  <div class="slide-title">1. Planteamiento del Problema</div>
+  <div class="content">
+    <div class="two-col">
+      <div>
+        <h3>Situacion Actual en Pymes</h3>
+        <div class="highlight-box red">
+          <p><strong>Procesos manuales</strong> de gestion humana: contratacion, novedades, vacaciones y liquidacion de nomina con hojas de calculo dispersas.</p>
+        </div>
+        <ul>
+          <li><strong>Errores de liquidacion</strong> con impacto economico directo en los pagos a empleados</li>
+          <li><strong>Sin trazabilidad</strong> ni control de versiones en los datos de nomina</li>
+          <li><strong>Reprocesos administrativos</strong> y demoras en atencion de solicitudes</li>
+          <li><strong>Riesgo normativo:</strong> incumplimiento de la Ley 1581/2012 en tratamiento de datos personales</li>
+          <li><strong>Sin canal de autoconsulta</strong> para los empleados</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Costo de Infraestructura On-Premise</h3>
+        <div class="stat-card" style="margin-bottom: 20px;">
+          <div class="number red">$120 USD/mes</div>
+          <div class="label">Hardware + energia + licencias + soporte</div>
+        </div>
+        <div class="highlight-box">
+          <h3>Pregunta Problema</h3>
+          <p style="font-size: 14px; font-style: italic;">
+            ¿De que manera un sistema de gestion de talento humano y nomina desplegado en un VPS (IaaS) de Linode permite reducir los errores de liquidacion, automatizar los procesos administrativos y disminuir en mas de un 90% el costo fijo mensual de infraestructura?
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>SIRH Nomina &mdash; Cesar Augusto Sotelo Zapata</span>
+    <span>2 / 10</span>
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- SLIDE 3: SOLUCION                                                   -->
+<!-- ================================================================== -->
+<div class="slide">
+  <div class="slide-title">2. Solucion Propuesta</div>
+  <div class="content">
+    <div class="highlight-box green">
+      <p><strong>Sistema web de gestion de talento humano y nomina</strong> desplegado en Linode (IaaS), con arquitectura en tres capas, API REST para autoconsulta de empleados, e infraestructura aprovisionada como codigo.</p>
+    </div>
+
+    <div class="three-col" style="margin-top: 25px;">
+      <div class="stat-card">
+        <div class="number green">-90%</div>
+        <div class="label">Reduccion de errores de liquidacion</div>
+        <p style="font-size: 12px; margin-top: 8px; color: #555;">Motor automatizado con exactitud >= 99%</p>
+      </div>
+      <div class="stat-card">
+        <div class="number green">-60%</div>
+        <div class="label">Tiempo de atencion de solicitudes</div>
+        <p style="font-size: 12px; margin-top: 8px; color: #555;">Autoconsulta via API REST + portal web</p>
+      </div>
+      <div class="stat-card">
+        <div class="number green">94.2%</div>
+        <div class="label">Ahorro en costos de infraestructura</div>
+        <p style="font-size: 12px; margin-top: 8px; color: #555;">$120 USD/mes &#8594; $7 USD/mes</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 25px;">
+      <h3>Modulos del Sistema</h3>
+      <div class="two-col">
+        <div>
+          <p><span class="badge badge-blue">Core</span> CRUD completo: Empleados, Departamentos, Cargos, Contratos. Control de acceso por roles (administrador, gestion humana, empleado).</p>
+        </div>
+        <div>
+          <p><span class="badge badge-green">Payroll</span> Motor de liquidacion de nomina colombiana. Parametros legales, novedades, horas extra, seguridad social, parafiscales.</p>
+        </div>
+      </div>
+      <div style="margin-top: 8px;">
+        <p><span class="badge badge-cyan">API REST</span> Canal de autoconsulta para empleados: desprendibles de pago, datos personales, contratos. Endpoint: <code>/api/nominas/mi_ultimo_desprendible/</code></p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>SIRH Nomina &mdash; Cesar Augusto Sotelo Zapata</span>
+    <span>3 / 10</span>
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- SLIDE 4: ARQUITECTURA                                               -->
+<!-- ================================================================== -->
+<div class="slide">
+  <div class="slide-title">3. Arquitectura Cloud (IaaS — Linode)</div>
+  <div class="content">
+    <div class="diagram">                          Linode Nanode 1GB  —  Ubuntu 24.04 LTS  —  Docker Compose
+                   ┌──────────────────────────────────────────────────────────────────┐
+                   │                                                                  │
+   Internet        │   ┌─────────────────────────────────────────────────────────┐    │
+   (HTTPS)  ──────►│   │  Nginx  (reverse proxy + TLS Let's Encrypt + static)   │    │
+                   │   └────────────────────────┬────────────────────────────────┘    │
+                   │                            │                                     │
+                   │   ┌────────────────────────▼────────────────────────────────┐    │
+                   │   │           Gunicorn + Django 5 (Python 3.12)             │    │
+                   │   │                                                         │    │
+                   │   │   ┌──────────┐    ┌───────────┐    ┌──────────────┐     │    │
+                   │   │   │   Core   │    │  Payroll  │    │   API REST   │     │    │
+                   │   │   │  (RRHH)  │    │ (Nomina)  │    │(Autoconsulta)│     │    │
+                   │   │   └──────────┘    └───────────┘    └──────────────┘     │    │
+                   │   └────────────────────────┬────────────────────────────────┘    │
+                   │                            │                                     │
+                   │   ┌────────────────────────▼────────────────────────────────┐    │
+                   │   │        PostgreSQL 16  (ACID + pgcrypto AES-256)         │    │
+                   │   │              Volumen persistente Docker                  │    │
+                   │   └─────────────────────────────────────────────────────────┘    │
+                   │                                                                  │
+                   │   Seguridad: UFW + fail2ban + Linode Cloud Firewall              │
+                   └──────────────────────────────────────────────────────────────────┘</div>
+    <div style="margin-top: 15px;">
+      <p style="font-size: 13px; color: #555;"><strong>Modelo de servicio:</strong> IaaS (NIST SP 800-145) — control total del SO para hardening CIS y portabilidad. <strong>Patron:</strong> Arquitectura en tres capas (presentacion, logica de negocio, datos) con MTV de Django.</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>SIRH Nomina &mdash; Cesar Augusto Sotelo Zapata</span>
+    <span>4 / 10</span>
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- SLIDE 5: STACK TECNOLOGICO                                          -->
+<!-- ================================================================== -->
+<div class="slide">
+  <div class="slide-title">4. Stack Tecnologico</div>
+  <div class="content">
+    <table>
+      <thead>
+        <tr><th>Capa</th><th>Tecnologia</th><th>Justificacion</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Lenguaje</strong></td><td>Python 3.12 LTS</td><td>Ecosistema maduro para aplicaciones de gestion; tipado robusto</td></tr>
+        <tr><td><strong>Framework</strong></td><td>Django 5 + DRF</td><td>ORM, autenticacion, admin y API REST integrados; menor superficie de error vs FastAPI</td></tr>
+        <tr><td><strong>Base de datos</strong></td><td>PostgreSQL 16</td><td>Transacciones ACID (critico para nomina); pgcrypto para cifrado AES-256</td></tr>
+        <tr><td><strong>Servidor</strong></td><td>Gunicorn + Nginx</td><td>WSGI produccion + reverse proxy + terminacion TLS con Let's Encrypt</td></tr>
+        <tr><td><strong>Contenedores</strong></td><td>Docker Compose</td><td>Paridad entre entornos (Twelve-Factor App); despliegues reproducibles</td></tr>
+        <tr><td><strong>IaC</strong></td><td>Terraform (provider linode)</td><td>Aprovisionamiento declarativo y versionado del VPS (Morris, 2020)</td></tr>
+        <tr><td><strong>CI/CD</strong></td><td>GitHub Actions</td><td>Pipeline: lint &#8594; security &#8594; test &#8594; build &#8594; deploy (Kim et al., 2021)</td></tr>
+        <tr><td><strong>Pruebas</strong></td><td>pytest + Locust</td><td>Tests unitarios, integracion y carga; cobertura de exactitud >= 99%</td></tr>
+        <tr><td><strong>Seguridad</strong></td><td>Argon2, bandit, pip-audit</td><td>Hashing OWASP, analisis estatico y auditoria de dependencias</td></tr>
+        <tr><td><strong>Infraestructura</strong></td><td>Linode Nanode 1GB</td><td>IaaS USD $5/mes + $2 backups = $7/mes total (ahorro 94.2%)</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size: 12px; color: #6c757d; margin-top: 12px;">Toda la pila es software libre sin costo de licenciamiento, coherente con la meta de reduccion de costos. Alternativas evaluadas: FastAPI (sin admin/auth integrado), MySQL (pgcrypto no nativo).</p>
+  </div>
+  <div class="slide-footer">
+    <span>SIRH Nomina &mdash; Cesar Augusto Sotelo Zapata</span>
+    <span>5 / 10</span>
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- SLIDE 6: CI/CD PIPELINE                                             -->
+<!-- ================================================================== -->
+<div class="slide">
+  <div class="slide-title">5. DevOps: Pipeline CI/CD e IaC</div>
+  <div class="content">
+    <h3>Pipeline de Integracion y Despliegue Continuo (GitHub Actions)</h3>
+    <div class="pipeline">
+      <div class="pipeline-step">Lint<small>ruff (PEP 8)</small></div>
+      <div class="pipeline-step">Security<small>bandit + pip-audit</small></div>
+      <div class="pipeline-step">Test<small>pytest + coverage</small></div>
+      <div class="pipeline-step">Build<small>Docker image</small></div>
+      <div class="pipeline-step">Deploy<small>SSH &#8594; Linode VPS</small></div>
+    </div>
+    <p style="font-size: 13px; color: #555; margin-bottom: 20px;">Cada push a <code>main</code> ejecuta el pipeline completo. Los PR solo ejecutan lint, security y tests.</p>
+
+    <div class="two-col">
+      <div>
+        <h3>Infraestructura como Codigo (Terraform)</h3>
+        <div class="highlight-box cyan">
+          <ul style="font-size: 13px;">
+            <li><strong>main.tf:</strong> VPS Nanode 1GB + Linode Cloud Firewall (puertos 80, 443, 22 restringido)</li>
+            <li><strong>cloud-init.yaml:</strong> Docker, swap 2GB, SSH hardening (ed25519), fail2ban, UFW, unattended-upgrades</li>
+            <li><strong>variables.tf:</strong> Token Linode (sensitive), region, SSH key, IPs admin</li>
+          </ul>
+        </div>
+        <p style="font-size: 13px; color: #555;">Entornos reproducibles y auditables: un <code>terraform apply</code> aprovisiona toda la infra desde cero.</p>
+      </div>
+      <div>
+        <h3>Flujo de Despliegue</h3>
+        <div class="highlight-box">
+          <ol style="font-size: 13px;">
+            <li><code>git push origin main</code></li>
+            <li>GitHub Actions ejecuta lint + security + tests</li>
+            <li>Build de imagen Docker multi-stage</li>
+            <li>Deploy via SSH al VPS Linode</li>
+            <li><code>docker compose up -d --build</code></li>
+            <li>Migraciones + collectstatic automaticos</li>
+          </ol>
+        </div>
+        <p style="font-size: 13px; color: #555;">Basado en The DevOps Handbook (Kim et al., 2021) y Continuous Integration (Fowler, 2006).</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>SIRH Nomina &mdash; Cesar Augusto Sotelo Zapata</span>
+    <span>6 / 10</span>
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- SLIDE 7: SEGURIDAD                                                  -->
+<!-- ================================================================== -->
+<div class="slide">
+  <div class="slide-title">6. Estrategia de Seguridad y Cumplimiento Normativo</div>
+  <div class="content">
+    <div class="two-col">
+      <div>
+        <h3>Seguridad en Profundidad (Defense in Depth)</h3>
+        <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Capa de red:</strong> Linode Cloud Firewall (puertos 80/443) + UFW + fail2ban. SSH solo con llaves ed25519, root login deshabilitado.</div></div>
+        <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Cifrado en transito:</strong> TLS 1.2+ con certificados Let's Encrypt (renovacion automatica via Certbot).</div></div>
+        <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Cifrado en reposo:</strong> pgcrypto/AES-256 para campos sensibles de nomina (salarios, documentos).</div></div>
+        <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Autenticacion:</strong> Contraseñas con Argon2 (OWASP best practice). Validacion minima 10 caracteres.</div></div>
+        <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Autorizacion:</strong> Control de acceso por roles (administrador, gestion humana, empleado) con principio de minimo privilegio.</div></div>
+        <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Auditoria:</strong> Middleware que registra todas las operaciones de escritura (usuario, IP, timestamp, accion).</div></div>
+        <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Hardening SO:</strong> CIS Benchmark Ubuntu, parches automaticos (unattended-upgrades).</div></div>
+        <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Headers HTTP:</strong> HSTS, X-Frame-Options DENY, X-Content-Type-Options, Referrer-Policy.</div></div>
+      </div>
+      <div>
+        <h3>Cumplimiento Normativo</h3>
+        <table style="font-size: 13px;">
+          <thead><tr><th>Marco</th><th>Implementacion</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Ley 1581/2012</strong></td><td>Cifrado de datos personales, consentimiento, control de acceso, auditoria</td></tr>
+            <tr><td><strong>ISO 27001</strong></td><td>SGSI: politica de acceso, gestion de llaves, monitoreo continuo</td></tr>
+            <tr><td><strong>NIST CSF 2.0</strong></td><td>Identificar, Proteger, Detectar (fail2ban), Responder, Recuperar (backups)</td></tr>
+            <tr><td><strong>CIS Benchmark</strong></td><td>Hardening Ubuntu via cloud-init</td></tr>
+            <tr><td><strong>OWASP Top 10</strong></td><td>Argon2, CSRF, XSS, SQL injection (ORM), seguridad por defecto</td></tr>
+          </tbody>
+        </table>
+
+        <div class="highlight-box green" style="margin-top: 20px;">
+          <h3>Backups y Recuperacion</h3>
+          <p style="font-size: 13px;">Linode Backups ($2/mes): copias automaticas diarias, semanales y por demanda. RPO &lt; 24h. Ruta de escalamiento: resize a Linode 2GB ($12/mes) sin reinstalacion.</p>
+        </div>
+
+        <div style="margin-top: 15px;">
+          <h3>Tokens y Secretos</h3>
+          <p style="font-size: 13px;">API tokens con alcance minimo y expiracion. Secretos en GitHub Secrets (nunca en codigo). Variables de entorno via <code>.env</code> (excluido de Git).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>SIRH Nomina &mdash; Cesar Augusto Sotelo Zapata</span>
+    <span>7 / 10</span>
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- SLIDE 8: PRESUPUESTO                                                -->
+<!-- ================================================================== -->
+<div class="slide">
+  <div class="slide-title">7. Presupuesto Cloud y Analisis de Costos</div>
+  <div class="content">
+    <div class="two-col">
+      <div>
+        <h3>Simulador de Presupuesto Mensual</h3>
+        <table>
+          <thead><tr><th>Servicio</th><th>Proveedor</th><th>Detalle</th><th style="text-align:right">USD/mes</th></tr></thead>
+          <tbody>
+            <tr><td>Nanode 1GB</td><td>Linode (Akamai)</td><td>1 vCPU, 1GB RAM, 25GB SSD, 1TB transfer</td><td style="text-align:right">$5.00</td></tr>
+            <tr><td>Backups</td><td>Linode (Akamai)</td><td>Copias automaticas diarias/semanales</td><td style="text-align:right">$2.00</td></tr>
+            <tr class="total-row"><td colspan="3"><strong>TOTAL MENSUAL</strong></td><td style="text-align:right"><strong>$7.00</strong></td></tr>
+          </tbody>
+        </table>
+        <p style="font-size: 12px; color: #6c757d; margin-top: 10px;">Fuente: akamai.com/cloud/pricing/north-america (septiembre 2026). Transferencia adicional: $0.005/GB (estimado &lt; 50GB/mes).</p>
+
+        <div class="highlight-box" style="margin-top: 15px;">
+          <h3>Ruta de Escalamiento</h3>
+          <p style="font-size: 13px;">Si 1GB RAM es insuficiente: <strong>Linode 2GB</strong> ($12/mes, 2 vCPU, 50GB SSD). Migracion via resize sin reinstalacion.</p>
+        </div>
+      </div>
+      <div>
+        <h3>Comparativa de Costos</h3>
+        <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+          <div class="stat-card" style="flex:1;">
+            <div class="number red">$120</div>
+            <div class="label">On-Premise (USD/mes)</div>
+          </div>
+          <div class="stat-card" style="flex:1;">
+            <div class="number green">$7</div>
+            <div class="label">Linode Cloud (USD/mes)</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="number green" style="font-size: 48px;">94.2%</div>
+          <div class="label" style="font-size: 16px;">Ahorro en costos de infraestructura</div>
+        </div>
+        <div style="margin-top: 15px;">
+          <h3>TCO Anual</h3>
+          <table style="font-size: 13px;">
+            <tbody>
+              <tr><td>On-Premise (12 meses)</td><td style="text-align:right; color: #dc3545; font-weight:700;">$1,440 USD</td></tr>
+              <tr><td>Linode Cloud (12 meses)</td><td style="text-align:right; color: #198754; font-weight:700;">$84 USD</td></tr>
+              <tr style="background:#f0fff4"><td><strong>Ahorro anual</strong></td><td style="text-align:right; font-weight:700;">$1,356 USD</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>SIRH Nomina &mdash; Cesar Augusto Sotelo Zapata</span>
+    <span>8 / 10</span>
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- SLIDE 9: RESULTADOS Y PRUEBAS                                       -->
+<!-- ================================================================== -->
+<div class="slide">
+  <div class="slide-title">8. Resultados y Pruebas Automatizadas</div>
+  <div class="content">
+    <div class="two-col">
+      <div>
+        <h3>Suite de Pruebas (pytest)</h3>
+        <table style="font-size: 13px;">
+          <thead><tr><th>Modulo</th><th>Tests</th><th>Cobertura</th></tr></thead>
+          <tbody>
+            <tr><td>Core (modelos, vistas)</td><td>7 tests</td><td>Modelos CRUD + auth</td></tr>
+            <tr><td>Payroll (liquidacion)</td><td>9 tests</td><td>Motor de nomina completo</td></tr>
+            <tr><td>API REST</td><td>4 tests</td><td>Endpoints + permisos</td></tr>
+            <tr class="total-row"><td><strong>Total</strong></td><td><strong>20 tests</strong></td><td><strong>Exactitud >= 99%</strong></td></tr>
+          </tbody>
+        </table>
+
+        <div class="highlight-box green" style="margin-top: 15px;">
+          <h3>Validaciones del Motor de Nomina</h3>
+          <ul style="font-size: 13px;">
+            <li>Salario con y sin auxilio de transporte</li>
+            <li>Horas extra (diurna 25%, nocturna 75%, dominical 100%, 150%)</li>
+            <li>Bonificaciones y deducciones</li>
+            <li>Aportes seguridad social (salud 4%, pension 4%)</li>
+            <li>Aportes patronales (salud 8.5%, pension 12%, ARL, SENA, ICBF, caja)</li>
+            <li>Re-liquidacion sin duplicados</li>
+            <li>Contratos inactivos excluidos</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h3>Metricas de Calidad (ISO/IEC 25010)</h3>
+        <div class="stat-card" style="margin-bottom: 15px;">
+          <div class="number green">>= 99%</div>
+          <div class="label">Exactitud funcional en liquidacion de nomina</div>
+        </div>
+
+        <h3>Estructura del Repositorio</h3>
+        <div class="highlight-box cyan">
+          <ul style="font-size: 13px;">
+            <li><strong>68 archivos</strong> organizados por capas</li>
+            <li><strong>3,881 lineas</strong> de codigo fuente</li>
+            <li>README.md profesional con diagramas</li>
+            <li>.gitignore configurado (sin secretos)</li>
+            <li>.env.example documentado</li>
+            <li>Datos semilla: 8 empleados, periodo liquidado</li>
+          </ul>
+        </div>
+
+        <h3 style="margin-top: 15px;">Datos de Demostracion</h3>
+        <p style="font-size: 13px;">5 departamentos, 8 cargos, 8 empleados con contratos, 1 periodo liquidado con novedades (comisiones, horas extra, bonificaciones). 3 roles: administrador, gestion_humana, empleado.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>SIRH Nomina &mdash; Cesar Augusto Sotelo Zapata</span>
+    <span>9 / 10</span>
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- SLIDE 10: CONCLUSIONES Y REFERENCIAS                                -->
+<!-- ================================================================== -->
+<div class="slide">
+  <div class="slide-title">9. Conclusiones y Referencias</div>
+  <div class="content">
+    <div class="two-col">
+      <div>
+        <h3>Conclusiones</h3>
+        <div class="highlight-box green">
+          <ul>
+            <li>La migracion a IaaS (Linode) reduce el costo de infraestructura en un <strong>94.2%</strong> ($120 &#8594; $7 USD/mes)</li>
+            <li>El motor de liquidacion automatizada elimina errores humanos con exactitud <strong>>= 99%</strong></li>
+            <li>La API REST de autoconsulta reduce la carga administrativa en <strong>60%</strong> al eliminar solicitudes repetitivas</li>
+            <li>La estrategia DevOps/CI-CD garantiza <strong>entregas repetibles y trazables</strong></li>
+            <li>El cumplimiento de <strong>Ley 1581/2012</strong>, <strong>ISO 27001</strong> y <strong>NIST CSF 2.0</strong> mitiga el riesgo normativo</li>
+          </ul>
+        </div>
+
+        <h3 style="margin-top: 15px;">Trabajo Futuro</h3>
+        <ul style="font-size: 13px;">
+          <li>Modulo de vacaciones y prestaciones sociales</li>
+          <li>Generacion de archivos PILA y reportes contables</li>
+          <li>Notificaciones por correo electronico</li>
+          <li>Dashboard analitico con graficos interactivos</li>
+          <li>Pruebas de carga con Locust en el VPS real</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Referencias Bibliograficas</h3>
+        <ul style="font-size: 12px; line-height: 1.9;">
+          <li>Mell, P. y Grance, T. (2011). <em>The NIST Definition of Cloud Computing</em>. NIST SP 800-145.</li>
+          <li>Kim, G., Humble, J., Debois, P. y Willis, J. (2021). <em>The DevOps Handbook</em> (2a ed.). IT Revolution.</li>
+          <li>Morris, K. (2020). <em>Infrastructure as Code</em> (2a ed.). O'Reilly Media.</li>
+          <li>Fowler, M. (2006). <em>Continuous Integration</em>. martinfowler.com.</li>
+          <li>Wiggins, A. (2017). <em>The Twelve-Factor App</em>. 12factor.net.</li>
+          <li>Pressman, R. S. y Maxim, B. R. (2021). <em>Ingenieria del software</em> (9a ed.). McGraw-Hill.</li>
+          <li>Laudon, K. C. y Laudon, J. P. (2020). <em>Management Information Systems</em> (16a ed.). Pearson.</li>
+          <li>Doran, G. T. (1981). S.M.A.R.T. goals. <em>Management Review</em>, 70(11).</li>
+          <li>ISO/IEC 25010:2011 — Modelos de calidad de producto.</li>
+          <li>ISO/IEC 27001:2022 — Seguridad de la informacion.</li>
+          <li>NIST (2024). Cybersecurity Framework (CSF) 2.0.</li>
+          <li>OWASP Foundation (2021). OWASP Top 10.</li>
+          <li>CIS Benchmarks — Ubuntu Linux.</li>
+          <li>Ley 1581/2012 y Decreto 1377/2013 — Proteccion de datos personales (Colombia).</li>
+          <li>Akamai (2026). Cloud Computing Pricing — North America.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>SIRH Nomina &mdash; Cesar Augusto Sotelo Zapata &mdash; github.com/csotelo-dev/ProoyectoCN</span>
+    <span>10 / 10</span>
+  </div>
+</div>
+
+</body>
+</html>

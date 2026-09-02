@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Contratos — SIRH{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h2>Contratos</h2>
+    {% if perms.core.add_contrato %}<a href="{% url 'contrato-create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Nuevo</a>{% endif %}
+</div>
+<div class="card">
+    <div class="table-responsive">
+        <table class="table">
+            <thead><tr><th>Empleado</th><th>Cargo</th><th>Tipo</th><th>Inicio</th><th>Salario</th><th>Estado</th><th style="width: 80px;"></th></tr></thead>
+            <tbody>
+            {% for c in contratos %}
+            <tr>
+                <td style="font-weight: 500;">{{ c.empleado }}</td>
+                <td>{{ c.cargo.nombre }}</td>
+                <td><span class="badge bg-info">{{ c.get_tipo_contrato_display }}</span></td>
+                <td>{{ c.fecha_inicio|date:"d M Y" }}</td>
+                <td style="font-weight: 600;">${{ c.salario_base|floatformat:0 }}</td>
+                <td>{% if c.activo %}<span class="badge bg-success">Activo</span>{% else %}<span class="badge bg-secondary">Inactivo</span>{% endif %}</td>
+                <td>{% if perms.core.change_contrato %}<a href="{% url 'contrato-update' c.pk %}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>{% endif %}</td>
+            </tr>
+            {% empty %}<tr><td colspan="7"><div class="empty-state"><i class="bi bi-file-earmark-text"></i><p>No hay contratos.</p></div></td></tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

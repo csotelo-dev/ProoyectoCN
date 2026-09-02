@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Cargos — SIRH{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h2>Cargos</h2>
+    {% if perms.core.add_cargo %}<a href="{% url 'cargo-create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Nuevo</a>{% endif %}
+</div>
+<div class="card">
+    <div class="table-responsive">
+        <table class="table">
+            <thead><tr><th>Nombre</th><th>Departamento</th><th>Riesgo ARL</th><th>Estado</th><th style="width: 100px;">Acciones</th></tr></thead>
+            <tbody>
+            {% for c in cargos %}
+            <tr>
+                <td style="font-weight: 500;">{{ c.nombre }}</td>
+                <td><span class="badge bg-info">{{ c.departamento }}</span></td>
+                <td><span class="badge bg-warning">Nivel {{ c.nivel_riesgo_arl }}</span></td>
+                <td>{% if c.activo %}<span class="badge bg-success">Activo</span>{% else %}<span class="badge bg-secondary">Inactivo</span>{% endif %}</td>
+                <td>{% if perms.core.change_cargo %}<a href="{% url 'cargo-update' c.pk %}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>{% endif %}</td>
+            </tr>
+            {% empty %}<tr><td colspan="5"><div class="empty-state"><i class="bi bi-briefcase"></i><p>No hay cargos.</p></div></td></tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

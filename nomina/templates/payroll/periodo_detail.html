@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}{{ periodo.nombre }} — SIRH{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>{{ periodo.nombre }}</h2>
+        <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
+            {{ periodo.fecha_inicio|date:"d M Y" }} — {{ periodo.fecha_fin|date:"d M Y" }}
+            {% if periodo.estado == 'BORRADOR' %}<span class="badge bg-warning ms-2">Borrador</span>
+            {% elif periodo.estado == 'LIQUIDADO' %}<span class="badge bg-info ms-2">Liquidado</span>
+            {% elif periodo.estado == 'APROBADO' %}<span class="badge bg-success ms-2">Aprobado</span>
+            {% elif periodo.estado == 'PAGADO' %}<span class="badge bg-primary ms-2">Pagado</span>{% endif %}
+        </div>
+    </div>
+    <div class="d-flex gap-2">
+        {% if perms.payroll.add_novedad %}
+        <a href="{% url 'novedad-create-periodo' periodo.pk %}" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i> Novedad</a>
+        {% endif %}
+        {% if periodo.estado == 'BORRADOR' or periodo.estado == 'LIQUIDADO' %}
+        {% if perms.payroll.change_periodonomina %}
+        <a href="{% url 'periodo-liquidar' periodo.pk %}" class="btn btn-success"
+           onclick="return confirm('¿Ejecutar la liquidacion de nomina para este periodo?')">
+            <i class="bi bi-calculator-fill"></i> Liquidar Nomina
+        </a>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+{% if novedades %}
+<div class="card mb-4">
+    <div class="card-header"><h5><i class="bi bi-journal-text me-2" style="color: var(--warning);"></i>Novedades ({{ novedades|length }})</h5></div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead><tr><th>Empleado</th><th>Tipo</th><th>Cantidad</th><th>Valor</th><th>Observacion</th></tr></thead>
+            <tbody>
+            {% for n in novedades %}
+            <tr>
+                <td style="font-weight: 500;">{{ n.empleado }}</td>
+                <td><span class="badge bg-info">{{ n.get_tipo_display }}</span></td>
+                <td>{{ n.cantidad }}</td>
+                <td style="font-weight: 600;">${{ n.valor|floatformat:0 }}</td>
+                <td style="color: var(--text-secondary); font-size: 13px;">{{ n.observacion|truncatewords:10 }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<div class="card">
+    <div class="card-header"><h5><i class="bi bi-receipt me-2" style="color: var(--primary);"></i>Nominas Liquidadas ({{ nominas|length }})</h5></div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead><tr><th>Empleado</th><th>Cargo</th><th>Salario</th><th>Aux. Transporte</th><th>Devengado</th><th>Deducciones</th><th>Neto a Pagar</th><th></th></tr></thead>
+            <tbody>
+            {% for n in nominas %}
+            <tr>
+                <td style="font-weight: 500;">{{ n.contrato.empleado.nombre_completo }}</td>
+                <td>{{ n.contrato.cargo.nombre }}</td>
+                <td>${{ n.salario_base|floatformat:0 }}</td>
+                <td>${{ n.auxilio_transporte|floatformat:0 }}</td>
+                <td style="color: var(--success); font-weight: 700;">${{ n.total_devengado|floatformat:0 }}</td>
+                <td style="color: var(--danger); font-weight: 600;">${{ n.total_deducciones|floatformat:0 }}</td>
+                <td style="font-weight: 800; font-size: 15px;">${{ n.neto_pagar|floatformat:0 }}</td>
+                <td><a href="{% url 'nomina-detail' n.pk %}" class="btn btn-sm btn-outline-primary">Detalle</a></td>
+            </tr>
+            {% empty %}<tr><td colspan="8"><div class="empty-state"><i class="bi bi-calculator"></i><p>Aun no se ha liquidado este periodo.</p></div></td></tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SIRH Nomina{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YcnS/1p8uVNc4pOGOelEkGYwnEQP2yTwTY9p"
+          crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="/static/css/custom.css" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo-icon"><i class="bi bi-people-fill"></i></div>
+            <h5>SIRH Nomina</h5>
+            <small>Gestion de Talento Humano</small>
+        </div>
+
+        <div class="nav-section">Principal</div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link{% if request.path == '/' %} active{% endif %}" href="{% url 'dashboard' %}">
+                    <i class="bi bi-grid-1x2-fill"></i> Dashboard
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-section">Talento Humano</div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link{% if 'empleados' in request.path %} active{% endif %}" href="{% url 'empleado-list' %}">
+                    <i class="bi bi-person-badge-fill"></i> Empleados
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link{% if 'departamentos' in request.path %} active{% endif %}" href="{% url 'departamento-list' %}">
+                    <i class="bi bi-building-fill"></i> Departamentos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link{% if 'cargos' in request.path %} active{% endif %}" href="{% url 'cargo-list' %}">
+                    <i class="bi bi-briefcase-fill"></i> Cargos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link{% if 'contratos' in request.path %} active{% endif %}" href="{% url 'contrato-list' %}">
+                    <i class="bi bi-file-earmark-text-fill"></i> Contratos
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-divider"></div>
+        <div class="nav-section">Nomina</div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link{% if 'periodos' in request.path %} active{% endif %}" href="{% url 'periodo-list' %}">
+                    <i class="bi bi-calculator-fill"></i> Liquidacion
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link{% if 'parametros' in request.path %} active{% endif %}" href="{% url 'parametro-list' %}">
+                    <i class="bi bi-sliders2"></i> Parametros
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-divider"></div>
+        <div class="nav-section">Sistema</div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'api-root' %}">
+                    <i class="bi bi-plug-fill"></i> API REST
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin:index' %}">
+                    <i class="bi bi-shield-lock-fill"></i> Admin Django
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navbar -->
+        <div class="top-navbar">
+            <div class="user-info">
+                <div class="user-avatar">{{ user.username|first|upper }}</div>
+                <div>
+                    <strong>{{ user.username }}</strong>
+                    {% if user.is_staff %}<span class="badge bg-primary ms-1">Staff</span>{% endif %}
+                </div>
+            </div>
+            <a href="{% url 'logout' %}" class="btn-logout">
+                <i class="bi bi-box-arrow-right"></i> Cerrar sesion
+            </a>
+        </div>
+
+        <!-- Page Content -->
+        <div class="page-content">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    {% else %}
+    {% block public_content %}{% endblock %}
+    {% endif %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

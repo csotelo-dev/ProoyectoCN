@@ -1,0 +1,84 @@
+#cloud-config
+# =============================================================================
+# Cloud-Init — Configuración base del VPS (Hardening CIS + Docker)
+# Ubuntu 24.04 LTS — Linode Nanode 1GB
+# =============================================================================
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - docker.io
+  - docker-compose-v2
+  - ufw
+  - fail2ban
+  - unattended-upgrades
+  - apt-listchanges
+
+# --- Swap de 2GB (compensar RAM limitada del Nanode) -------------------------
+swap:
+  filename: /swapfile
+  size: 2147483648
+  maxsize: 2147483648
+
+# --- Hardening del SO (CIS Benchmark Ubuntu) ---------------------------------
+write_files:
+  # Configuración de SSH hardening
+  - path: /etc/ssh/sshd_config.d/hardening.conf
+    content: |
+      PermitRootLogin no
+      PasswordAuthentication no
+      PubkeyAuthentication yes
+      AuthenticationMethods publickey
+      X11Forwarding no
+      MaxAuthTries 3
+      ClientAliveInterval 300
+      ClientAliveCountMax 2
+      Protocol 2
+
+  # Configuración de fail2ban
+  - path: /etc/fail2ban/jail.local
+    content: |
+      [sshd]
+      enabled = true
+      port = 22
+      filter = sshd
+      logpath = /var/log/auth.log
+      maxretry = 3
+      bantime = 3600
+      findtime = 600
+
+  # Actualizaciones automáticas de seguridad
+  - path: /etc/apt/apt.conf.d/20auto-upgrades
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+      APT::Periodic::AutocleanInterval "7";
+
+runcmd:
+  # Firewall UFW (segunda capa después de Linode Cloud Firewall)
+  - ufw default deny incoming
+  - ufw default allow outgoing
+  - ufw allow 22/tcp
+  - ufw allow 80/tcp
+  - ufw allow 443/tcp
+  - ufw --force enable
+
+  # Habilitar servicios
+  - systemctl enable docker
+  - systemctl start docker
+  - systemctl enable fail2ban
+  - systemctl start fail2ban
+  - systemctl enable unattended-upgrades
+
+  # Crear usuario de despliegue (no-root)
+  - useradd -m -s /bin/bash -G docker deploy
+  - mkdir -p /home/deploy/.ssh
+  - cp /root/.ssh/authorized_keys /home/deploy/.ssh/
+  - chown -R deploy:deploy /home/deploy/.ssh
+  - chmod 700 /home/deploy/.ssh
+  - chmod 600 /home/deploy/.ssh/authorized_keys
+
+  # Directorio de la aplicación
+  - mkdir -p /opt/sirh-nomina
+  - chown deploy:deploy /opt/sirh-nomina

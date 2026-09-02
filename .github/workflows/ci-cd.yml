@@ -1,0 +1,120 @@
+# =============================================================================
+# GitHub Actions — Pipeline CI/CD
+# Lint → Security → Test → Build → Deploy
+# =============================================================================
+
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  # --- Lint y calidad de codigo -----------------------------------------------
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install Ruff
+        run: pip install ruff==0.6.8
+
+      - name: Run Ruff linter
+        run: ruff check nomina/ --exclude "*/migrations/*" --config ruff.toml
+
+  # --- Analisis de seguridad --------------------------------------------------
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install Bandit
+        run: pip install bandit
+
+      - name: Run Bandit (security analysis)
+        run: bandit -r nomina/ -x nomina/tests,nomina/conftest.py,nomina/core/migrations,nomina/payroll/migrations -ll
+
+  # --- Tests con PostgreSQL ---------------------------------------------------
+  test:
+    runs-on: ubuntu-latest
+    needs: [lint]
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: test_nomina_db
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U test_user -d test_nomina_db"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run migrations
+        working-directory: nomina
+        env:
+          DJANGO_SECRET_KEY: test-secret-key-not-for-production
+          DJANGO_DEBUG: "True"
+          DB_ENGINE: django.db.backends.postgresql
+          POSTGRES_DB: test_nomina_db
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: "5432"
+        run: python manage.py migrate --noinput
+
+      - name: Run tests with coverage
+        working-directory: nomina
+        env:
+          DJANGO_SECRET_KEY: test-secret-key-not-for-production
+          DJANGO_DEBUG: "True"
+          DB_ENGINE: django.db.backends.postgresql
+          POSTGRES_DB: test_nomina_db
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: "5432"
+        run: pytest --cov=. --cov-report=term-missing -v
+
+  # --- Build Docker image -----------------------------------------------------
+  build:
+    runs-on: ubuntu-latest
+    needs: [test, security]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t sirh-nomina:${{ github.sha }} .
+
+      - name: Verify image
+        run: docker images sirh-nomina
