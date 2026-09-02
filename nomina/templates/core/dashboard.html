@@ -5,15 +5,15 @@
 <div class="page-header">
     <div>
         <h2>Dashboard</h2>
-        <p class="page-subtitle">Vista general del sistema de gestion de talento humano y nomina</p>
+        <p class="page-subtitle">Resumen de gestion de talento humano y nomina</p>
     </div>
     {% if perms.core.add_empleado %}
-    <a href="{% url 'empleado-create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Nuevo Empleado</a>
+    <a href="{% url 'empleado-create' %}" class="btn btn-primary"><i class="bi bi-plus"></i> Nuevo Empleado</a>
     {% endif %}
 </div>
 
-<!-- Stat Cards Row 1: Resumen principal -->
-<div class="row g-4 mb-4">
+<!-- Metricas principales -->
+<div class="row g-3 mb-4">
     <div class="col-md-3">
         <div class="card stat-card">
             <div class="card-body">
@@ -23,13 +23,13 @@
                         <div class="stat-value">{{ total_empleados }}</div>
                         <div class="stat-hint">Personas vinculadas</div>
                     </div>
-                    <div class="stat-icon purple"><i class="bi bi-person-badge-fill"></i></div>
+                    <div class="stat-icon purple"><i class="bi bi-person-badge"></i></div>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card stat-card">
+        <div class="card stat-card border-accent">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
@@ -37,13 +37,13 @@
                         <div class="stat-value">{{ total_contratos }}</div>
                         <div class="stat-hint">Vinculaciones activas</div>
                     </div>
-                    <div class="stat-icon blue"><i class="bi bi-file-earmark-check-fill"></i></div>
+                    <div class="stat-icon green"><i class="bi bi-file-earmark-check"></i></div>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card stat-card">
+        <div class="card stat-card border-info">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
@@ -51,13 +51,13 @@
                         <div class="stat-value">{{ total_departamentos }}</div>
                         <div class="stat-hint">{{ total_cargos }} cargos registrados</div>
                     </div>
-                    <div class="stat-icon green"><i class="bi bi-building-fill"></i></div>
+                    <div class="stat-icon blue"><i class="bi bi-building"></i></div>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card stat-card">
+        <div class="card stat-card border-warning">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
@@ -65,21 +65,20 @@
                         <div class="stat-value">{{ periodos_pendientes }}</div>
                         <div class="stat-hint">Por liquidar</div>
                     </div>
-                    <div class="stat-icon orange"><i class="bi bi-clock-fill"></i></div>
+                    <div class="stat-icon orange"><i class="bi bi-clock"></i></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Fila 2: Resumen de Nomina + Distribucion -->
-<div class="row g-4 mb-4">
-    <!-- Ultima Nomina -->
+<!-- Nomina + Distribucion -->
+<div class="row g-3 mb-4">
     <div class="col-md-8">
         <div class="card h-100">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h5><i class="bi bi-receipt-cutoff me-2 text-primary"></i>Ultima Nomina Liquidada</h5>
+                    <h5><i class="bi bi-receipt me-2 text-primary"></i>Ultima Nomina Liquidada</h5>
                     {% if ultimo_periodo %}<a href="{% url 'periodo-detail' ultimo_periodo.pk %}" class="btn btn-sm btn-outline-primary">Ver detalle</a>{% endif %}
                 </div>
             </div>
@@ -88,52 +87,50 @@
                 <div class="nomina-summary-grid">
                     <div class="nomina-summary-item">
                         <div class="nomina-summary-label">Periodo</div>
-                        <div class="nomina-summary-value">{{ ultimo_periodo.nombre }}</div>
+                        <div class="nomina-summary-value" style="font-size: 14px;">{{ ultimo_periodo.nombre }}</div>
                         <div class="nomina-summary-sub">{{ ultimo_periodo.fecha_inicio|date:"d M" }} — {{ ultimo_periodo.fecha_fin|date:"d M Y" }}</div>
                     </div>
                     <div class="nomina-summary-item">
                         <div class="nomina-summary-label">Estado</div>
-                        <div class="nomina-summary-value">
-                            {% if ultimo_periodo.estado == 'BORRADOR' %}<span class="badge bg-warning" style="font-size: 14px; padding: 6px 14px;">Borrador</span>
-                            {% elif ultimo_periodo.estado == 'LIQUIDADO' %}<span class="badge bg-info" style="font-size: 14px; padding: 6px 14px;">Liquidado</span>
-                            {% elif ultimo_periodo.estado == 'APROBADO' %}<span class="badge bg-success" style="font-size: 14px; padding: 6px 14px;">Aprobado</span>
-                            {% elif ultimo_periodo.estado == 'PAGADO' %}<span class="badge bg-primary" style="font-size: 14px; padding: 6px 14px;">Pagado</span>{% endif %}
+                        <div style="margin-top: 4px;">
+                            {% if ultimo_periodo.estado == 'BORRADOR' %}<span class="badge bg-warning">Borrador</span>
+                            {% elif ultimo_periodo.estado == 'LIQUIDADO' %}<span class="badge bg-info">Liquidado</span>
+                            {% elif ultimo_periodo.estado == 'APROBADO' %}<span class="badge bg-success">Aprobado</span>
+                            {% elif ultimo_periodo.estado == 'PAGADO' %}<span class="badge bg-primary">Pagado</span>{% endif %}
                         </div>
                     </div>
                     <div class="nomina-summary-item">
-                        <div class="nomina-summary-label">Nominas Procesadas</div>
+                        <div class="nomina-summary-label">Nominas</div>
                         <div class="nomina-summary-value text-primary">{{ nominas_count }}</div>
                         <div class="nomina-summary-sub">empleados liquidados</div>
                     </div>
                     <div class="nomina-summary-item">
                         <div class="nomina-summary-label">Total Devengado</div>
-                        <div class="nomina-summary-value text-success">${{ total_nomina_devengado|floatformat:0|default:"—" }}</div>
+                        <div class="nomina-summary-value text-accent">${{ total_nomina_devengado|floatformat:0|default:"—" }}</div>
                     </div>
                     <div class="nomina-summary-item">
-                        <div class="nomina-summary-label">Total Neto a Pagar</div>
-                        <div class="nomina-summary-value text-primary" style="font-size: 24px;">${{ total_nomina_neto|floatformat:0|default:"—" }}</div>
+                        <div class="nomina-summary-label">Neto a Pagar</div>
+                        <div class="nomina-summary-value text-primary">${{ total_nomina_neto|floatformat:0|default:"—" }}</div>
                     </div>
                 </div>
                 {% else %}
                 <div class="empty-state">
                     <i class="bi bi-calculator"></i>
-                    <p>No hay periodos de nomina creados aun.</p>
-                    {% if perms.payroll.add_periodonomina %}<a href="{% url 'periodo-create' %}" class="btn btn-primary btn-sm mt-2"><i class="bi bi-plus-lg"></i> Crear Periodo</a>{% endif %}
+                    <p>No hay periodos de nomina creados.</p>
+                    {% if perms.payroll.add_periodonomina %}<a href="{% url 'periodo-create' %}" class="btn btn-primary btn-sm mt-2"><i class="bi bi-plus"></i> Crear Periodo</a>{% endif %}
                 </div>
                 {% endif %}
             </div>
         </div>
     </div>
-
-    <!-- Distribucion por departamento -->
     <div class="col-md-4">
         <div class="card h-100">
-            <div class="card-header"><h5><i class="bi bi-pie-chart-fill me-2 text-success"></i>Por Departamento</h5></div>
+            <div class="card-header"><h5><i class="bi bi-bar-chart me-2 text-accent"></i>Distribucion por Area</h5></div>
             <div class="card-body">
                 {% if departamentos_con_empleados %}
                 {% for dep in departamentos_con_empleados %}
                 <div class="dept-bar-item">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
+                    <div class="d-flex justify-content-between mb-1">
                         <span class="dept-bar-label">{{ dep.nombre }}</span>
                         <span class="dept-bar-count">{{ dep.count }}</span>
                     </div>
@@ -143,54 +140,46 @@
                 </div>
                 {% endfor %}
                 {% else %}
-                <div class="empty-state">
-                    <i class="bi bi-building"></i>
-                    <p>Sin datos de departamentos.</p>
-                </div>
+                <div class="empty-state"><i class="bi bi-building"></i><p>Sin datos.</p></div>
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
 
-<!-- Fila 3: Acciones Rapidas -->
-<div class="row g-4 mb-4">
-    <div class="col-12">
-        <div class="quick-actions">
-            <div class="quick-actions-title">Acciones Rapidas</div>
-            <div class="quick-actions-grid">
-                <a href="{% url 'empleado-create' %}" class="quick-action-item">
-                    <div class="quick-action-icon purple"><i class="bi bi-person-plus-fill"></i></div>
-                    <span>Nuevo Empleado</span>
-                </a>
-                <a href="{% url 'contrato-create' %}" class="quick-action-item">
-                    <div class="quick-action-icon blue"><i class="bi bi-file-earmark-plus-fill"></i></div>
-                    <span>Nuevo Contrato</span>
-                </a>
-                <a href="{% url 'periodo-create' %}" class="quick-action-item">
-                    <div class="quick-action-icon green"><i class="bi bi-calendar-plus-fill"></i></div>
-                    <span>Nuevo Periodo</span>
-                </a>
-                <a href="{% url 'novedad-create' %}" class="quick-action-item">
-                    <div class="quick-action-icon orange"><i class="bi bi-journal-plus"></i></div>
-                    <span>Registrar Novedad</span>
-                </a>
-                <a href="{% url 'parametro-list' %}" class="quick-action-item">
-                    <div class="quick-action-icon" style="background: rgba(139,92,246,0.08); color: #8b5cf6;"><i class="bi bi-sliders2"></i></div>
-                    <span>Parametros</span>
-                </a>
-                <a href="{% url 'api-root' %}" class="quick-action-item">
-                    <div class="quick-action-icon" style="background: rgba(236,72,153,0.08); color: #ec4899;"><i class="bi bi-plug-fill"></i></div>
-                    <span>API REST</span>
-                </a>
-            </div>
-        </div>
+<!-- Acciones rapidas -->
+<div class="quick-actions mb-4">
+    <div class="quick-actions-title">Acciones Rapidas</div>
+    <div class="quick-actions-grid">
+        <a href="{% url 'empleado-create' %}" class="quick-action-item">
+            <div class="quick-action-icon purple"><i class="bi bi-person-plus"></i></div>
+            <span>Nuevo Empleado</span>
+        </a>
+        <a href="{% url 'contrato-create' %}" class="quick-action-item">
+            <div class="quick-action-icon blue"><i class="bi bi-file-earmark-plus"></i></div>
+            <span>Nuevo Contrato</span>
+        </a>
+        <a href="{% url 'periodo-create' %}" class="quick-action-item">
+            <div class="quick-action-icon green"><i class="bi bi-calendar-plus"></i></div>
+            <span>Nuevo Periodo</span>
+        </a>
+        <a href="{% url 'novedad-create' %}" class="quick-action-item">
+            <div class="quick-action-icon orange"><i class="bi bi-journal-plus"></i></div>
+            <span>Registrar Novedad</span>
+        </a>
+        <a href="{% url 'parametro-list' %}" class="quick-action-item">
+            <div class="quick-action-icon" style="background: var(--primary-light); color: var(--primary);"><i class="bi bi-sliders2"></i></div>
+            <span>Parametros</span>
+        </a>
+        <a href="{% url 'api-root' %}" class="quick-action-item">
+            <div class="quick-action-icon" style="background: var(--info-light); color: var(--info);"><i class="bi bi-plug"></i></div>
+            <span>API REST</span>
+        </a>
     </div>
 </div>
 
-<!-- Fila 4: Tablas de datos recientes -->
-<div class="row g-4">
-    <!-- Empleados recientes -->
+<!-- Tablas recientes -->
+<div class="row g-3 mb-4">
     <div class="col-md-6">
         <div class="card h-100">
             <div class="card-header">
@@ -200,26 +189,24 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table mb-0">
+                <table class="table">
                     <thead><tr><th>Nombre</th><th>Documento</th><th>Registrado</th><th></th></tr></thead>
                     <tbody>
                     {% for emp in empleados_recientes %}
                     <tr>
-                        <td class="fw-medium">{{ emp.nombre_completo }}</td>
-                        <td class="text-muted">{{ emp.numero_documento }}</td>
-                        <td class="text-muted">{{ emp.creado_en|date:"d M Y" }}</td>
-                        <td><a href="{% url 'empleado-detail' emp.pk %}" class="btn btn-sm btn-outline-primary py-0 px-2">Ver</a></td>
+                        <td class="td-primary">{{ emp.nombre_completo }}</td>
+                        <td class="td-muted">{{ emp.numero_documento }}</td>
+                        <td class="td-muted">{{ emp.creado_en|date:"d M Y" }}</td>
+                        <td><a href="{% url 'empleado-detail' emp.pk %}" class="btn btn-sm btn-outline-primary">Ver</a></td>
                     </tr>
                     {% empty %}
-                    <tr><td colspan="4"><div class="empty-state py-4"><i class="bi bi-person-plus" style="font-size: 32px;"></i><p>No hay empleados registrados.</p>{% if perms.core.add_empleado %}<a href="{% url 'empleado-create' %}" class="btn btn-primary btn-sm mt-2"><i class="bi bi-plus-lg"></i> Agregar</a>{% endif %}</div></td></tr>
+                    <tr><td colspan="4"><div class="empty-state" style="padding: 30px;"><i class="bi bi-person-plus"></i><p>No hay empleados registrados.</p></div></td></tr>
                     {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
-    <!-- Contratos recientes -->
     <div class="col-md-6">
         <div class="card h-100">
             <div class="card-header">
@@ -229,18 +216,18 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table mb-0">
+                <table class="table">
                     <thead><tr><th>Empleado</th><th>Cargo</th><th>Salario</th><th>Tipo</th></tr></thead>
                     <tbody>
                     {% for c in contratos_recientes %}
                     <tr>
-                        <td class="fw-medium">{{ c.empleado.primer_nombre }} {{ c.empleado.primer_apellido }}</td>
-                        <td class="text-muted">{{ c.cargo.nombre }}</td>
-                        <td class="fw-semibold">${{ c.salario_base|floatformat:0 }}</td>
+                        <td class="td-primary">{{ c.empleado.primer_nombre }} {{ c.empleado.primer_apellido }}</td>
+                        <td class="td-muted">{{ c.cargo.nombre }}</td>
+                        <td class="td-money">${{ c.salario_base|floatformat:0 }}</td>
                         <td><span class="badge bg-info">{{ c.get_tipo_contrato_display }}</span></td>
                     </tr>
                     {% empty %}
-                    <tr><td colspan="4"><div class="empty-state py-4"><i class="bi bi-file-earmark-plus" style="font-size: 32px;"></i><p>No hay contratos registrados.</p>{% if perms.core.add_contrato %}<a href="{% url 'contrato-create' %}" class="btn btn-primary btn-sm mt-2"><i class="bi bi-plus-lg"></i> Agregar</a>{% endif %}</div></td></tr>
+                    <tr><td colspan="4"><div class="empty-state" style="padding: 30px;"><i class="bi bi-file-earmark-plus"></i><p>No hay contratos registrados.</p></div></td></tr>
                     {% endfor %}
                     </tbody>
                 </table>
@@ -250,27 +237,23 @@
 </div>
 
 <!-- Costo cloud -->
-<div class="row g-4 mt-0">
-    <div class="col-12">
-        <div class="cloud-cost-banner">
-            <div class="d-flex align-items-center gap-3">
-                <div class="cloud-cost-icon"><i class="bi bi-cloud-check-fill"></i></div>
-                <div>
-                    <div class="cloud-cost-title">Infraestructura en la Nube</div>
-                    <div class="cloud-cost-sub">Linode (Akamai Cloud) — Nanode 1GB — IaaS</div>
-                </div>
-            </div>
-            <div class="d-flex align-items-center gap-4">
-                <div class="text-center">
-                    <div class="cloud-cost-amount">$7<small>/mes</small></div>
-                    <div class="cloud-cost-label">Costo actual</div>
-                </div>
-                <div class="cloud-cost-divider"></div>
-                <div class="text-center">
-                    <div class="cloud-cost-saving">94.2%</div>
-                    <div class="cloud-cost-label">Ahorro vs on-premise</div>
-                </div>
-            </div>
+<div class="cloud-cost-banner">
+    <div class="d-flex align-items-center gap-3">
+        <div class="cloud-cost-icon"><i class="bi bi-cloud-check"></i></div>
+        <div>
+            <div class="cloud-cost-title">Infraestructura Cloud</div>
+            <div class="cloud-cost-sub">Linode (Akamai) — Nanode 1GB — IaaS</div>
+        </div>
+    </div>
+    <div class="d-flex align-items-center gap-4">
+        <div class="text-center">
+            <div class="cloud-cost-amount">$7<small>/mes</small></div>
+            <div class="cloud-cost-label">Costo actual</div>
+        </div>
+        <div class="cloud-cost-divider"></div>
+        <div class="text-center">
+            <div class="cloud-cost-saving">94.2%</div>
+            <div class="cloud-cost-label">Ahorro vs on-premise</div>
         </div>
     </div>
 </div>
