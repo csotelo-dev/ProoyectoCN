@@ -2,17 +2,20 @@
 {% block title %}Nomina — SIRH{% endblock %}
 {% block content %}
 <div class="page-header">
-    <h2>Periodos de Nomina</h2>
-    {% if perms.payroll.add_periodonomina %}<a href="{% url 'periodo-create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Nuevo Periodo</a>{% endif %}
+    <div>
+        <h2>Periodos de Nomina</h2>
+        <p class="page-subtitle">Liquidacion mensual de nomina</p>
+    </div>
+    {% if perms.payroll.add_periodonomina %}<a href="{% url 'periodo-create' %}" class="btn btn-primary"><i class="bi bi-plus"></i> Nuevo Periodo</a>{% endif %}
 </div>
 <div class="card">
     <div class="table-responsive">
         <table class="table">
-            <thead><tr><th>Periodo</th><th>Inicio</th><th>Fin</th><th>Estado</th><th style="width: 100px;">Acciones</th></tr></thead>
+            <thead><tr><th>Periodo</th><th>Inicio</th><th>Fin</th><th style="width: 110px;">Estado</th><th style="width: 80px; text-align: right;">Acciones</th></tr></thead>
             <tbody>
             {% for p in periodos %}
             <tr>
-                <td style="font-weight: 500;">{{ p.nombre }}</td>
+                <td class="td-primary">{{ p.nombre }}</td>
                 <td>{{ p.fecha_inicio|date:"d M Y" }}</td>
                 <td>{{ p.fecha_fin|date:"d M Y" }}</td>
                 <td>
@@ -21,7 +24,7 @@
                     {% elif p.estado == 'APROBADO' %}<span class="badge bg-success">Aprobado</span>
                     {% elif p.estado == 'PAGADO' %}<span class="badge bg-primary">Pagado</span>{% endif %}
                 </td>
-                <td><a href="{% url 'periodo-detail' p.pk %}" class="btn btn-sm btn-outline-primary">Ver</a></td>
+                <td style="text-align: right;"><a href="{% url 'periodo-detail' p.pk %}" class="btn btn-sm btn-outline-primary">Ver</a></td>
             </tr>
             {% empty %}<tr><td colspan="5"><div class="empty-state"><i class="bi bi-calculator"></i><p>No hay periodos creados.</p></div></td></tr>{% endfor %}
             </tbody>

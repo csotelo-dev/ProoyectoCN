@@ -4,74 +4,67 @@
 <div class="page-header">
     <div>
         <h2>Desprendible de Nomina</h2>
-        <div style="font-size: 14px; color: var(--text-secondary); margin-top: 4px;">
-            <strong>{{ nomina.contrato.empleado.nombre_completo }}</strong> — {{ nomina.periodo.nombre }}
-        </div>
+        <p class="page-subtitle">{{ nomina.contrato.empleado.nombre_completo }} — {{ nomina.periodo.nombre }}</p>
     </div>
-    <a href="{% url 'periodo-detail' nomina.periodo.pk %}" class="btn btn-outline-primary btn-sm"><i class="bi bi-arrow-left"></i> Volver</a>
+    <a href="{% url 'periodo-detail' nomina.periodo.pk %}" class="btn btn-sm btn-secondary"><i class="bi bi-arrow-left"></i> Volver al periodo</a>
 </div>
 
-<div class="row g-4">
-    <div class="col-md-6">
-        <div class="card devengado-card">
-            <div class="card-header"><h5><i class="bi bi-graph-up-arrow me-2" style="color: var(--success);"></i>Devengados</h5></div>
-            <div class="card-body">
-                <table class="table table-borderless mb-0" style="font-size: 14px;">
-                    <tr><td>Salario Base ({{ nomina.dias_trabajados }} dias)</td><td class="text-end" style="font-weight: 600;">${{ nomina.salario_base|floatformat:0 }}</td></tr>
-                    <tr><td>Auxilio de Transporte</td><td class="text-end">${{ nomina.auxilio_transporte|floatformat:0 }}</td></tr>
-                    <tr><td>Horas Extra</td><td class="text-end">${{ nomina.total_horas_extra|floatformat:0 }}</td></tr>
-                    <tr><td>Bonificaciones</td><td class="text-end">${{ nomina.total_bonificaciones|floatformat:0 }}</td></tr>
-                    <tr><td>Comisiones</td><td class="text-end">${{ nomina.total_comisiones|floatformat:0 }}</td></tr>
-                    <tr style="border-top: 2px solid var(--border);"><td style="font-weight: 700; color: var(--success);">TOTAL DEVENGADO</td><td class="text-end" style="font-weight: 800; color: var(--success); font-size: 16px;">${{ nomina.total_devengado|floatformat:0 }}</td></tr>
-                </table>
-            </div>
+<!-- Devengados + Deducciones lado a lado -->
+<div style="display: flex; gap: 16px; margin-bottom: 16px;">
+    <div class="card devengado-card" style="flex: 1;">
+        <div class="card-header"><h5><i class="bi bi-arrow-up-circle me-2 text-accent"></i>Devengados</h5></div>
+        <div class="card-body" style="padding: 0;">
+            <table class="table" style="margin: 0;">
+                <tr><td>Salario Base ({{ nomina.dias_trabajados }} dias)</td><td class="td-money" style="text-align: right;">${{ nomina.salario_base|floatformat:0 }}</td></tr>
+                <tr><td>Auxilio de Transporte</td><td style="text-align: right;">${{ nomina.auxilio_transporte|floatformat:0 }}</td></tr>
+                <tr><td>Horas Extra</td><td style="text-align: right;">${{ nomina.total_horas_extra|floatformat:0 }}</td></tr>
+                <tr><td>Bonificaciones</td><td style="text-align: right;">${{ nomina.total_bonificaciones|floatformat:0 }}</td></tr>
+                <tr><td>Comisiones</td><td style="text-align: right;">${{ nomina.total_comisiones|floatformat:0 }}</td></tr>
+                <tr style="background: var(--accent-light);"><td class="td-primary" style="color: var(--accent);">TOTAL DEVENGADO</td><td class="td-money" style="text-align: right; color: var(--accent); font-size: 15px;">${{ nomina.total_devengado|floatformat:0 }}</td></tr>
+            </table>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="card deduccion-card">
-            <div class="card-header"><h5><i class="bi bi-graph-down-arrow me-2" style="color: var(--danger);"></i>Deducciones</h5></div>
-            <div class="card-body">
-                <table class="table table-borderless mb-0" style="font-size: 14px;">
-                    <tr><td>Aporte Salud (Empleado)</td><td class="text-end" style="font-weight: 600;">${{ nomina.aporte_salud_empleado|floatformat:0 }}</td></tr>
-                    <tr><td>Aporte Pension (Empleado)</td><td class="text-end">${{ nomina.aporte_pension_empleado|floatformat:0 }}</td></tr>
-                    <tr><td>Otras Deducciones</td><td class="text-end">${{ nomina.total_otras_deducciones|floatformat:0 }}</td></tr>
-                    <tr style="border-top: 2px solid var(--border);"><td style="font-weight: 700; color: var(--danger);">TOTAL DEDUCCIONES</td><td class="text-end" style="font-weight: 800; color: var(--danger); font-size: 16px;">${{ nomina.total_deducciones|floatformat:0 }}</td></tr>
-                </table>
-            </div>
+    <div class="card deduccion-card" style="flex: 1;">
+        <div class="card-header"><h5><i class="bi bi-arrow-down-circle me-2 text-danger"></i>Deducciones</h5></div>
+        <div class="card-body" style="padding: 0;">
+            <table class="table" style="margin: 0;">
+                <tr><td>Aporte Salud (Empleado)</td><td class="td-money" style="text-align: right;">${{ nomina.aporte_salud_empleado|floatformat:0 }}</td></tr>
+                <tr><td>Aporte Pension (Empleado)</td><td style="text-align: right;">${{ nomina.aporte_pension_empleado|floatformat:0 }}</td></tr>
+                <tr><td>Otras Deducciones</td><td style="text-align: right;">${{ nomina.total_otras_deducciones|floatformat:0 }}</td></tr>
+                <tr><td colspan="2" style="height: 42px;"></td></tr>
+                <tr><td colspan="2" style="height: 42px;"></td></tr>
+                <tr style="background: var(--danger-light);"><td class="td-primary" style="color: var(--danger);">TOTAL DEDUCCIONES</td><td class="td-money" style="text-align: right; color: var(--danger); font-size: 15px;">${{ nomina.total_deducciones|floatformat:0 }}</td></tr>
+            </table>
         </div>
     </div>
 </div>
 
-<div class="card neto-card mt-4">
-    <div class="card-body text-center py-4">
-        <div style="font-size: 14px; opacity: 0.85; font-weight: 500; margin-bottom: 4px;">NETO A PAGAR</div>
+<!-- Neto a pagar -->
+<div class="card neto-card" style="margin-bottom: 16px;">
+    <div class="card-body" style="text-align: center; padding: 20px;">
+        <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; margin-bottom: 4px;">Neto a Pagar</div>
         <h1>${{ nomina.neto_pagar|floatformat:0 }}</h1>
     </div>
 </div>
 
-<div class="card patronal-card mt-4">
-    <div class="card-header"><h5><i class="bi bi-info-circle me-2" style="color: var(--secondary);"></i>Aportes del Empleador (Informativos)</h5></div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-6">
-                <table class="table table-borderless table-sm mb-0" style="font-size: 13.5px;">
-                    <tr><td style="color: var(--text-muted);">Salud Empleador</td><td class="text-end">${{ nomina.aporte_salud_empleador|floatformat:0 }}</td></tr>
-                    <tr><td style="color: var(--text-muted);">Pension Empleador</td><td class="text-end">${{ nomina.aporte_pension_empleador|floatformat:0 }}</td></tr>
-                    <tr><td style="color: var(--text-muted);">ARL</td><td class="text-end">${{ nomina.aporte_arl|floatformat:0 }}</td></tr>
-                </table>
-            </div>
-            <div class="col-md-6">
-                <table class="table table-borderless table-sm mb-0" style="font-size: 13.5px;">
-                    <tr><td style="color: var(--text-muted);">SENA</td><td class="text-end">${{ nomina.aporte_sena|floatformat:0 }}</td></tr>
-                    <tr><td style="color: var(--text-muted);">ICBF</td><td class="text-end">${{ nomina.aporte_icbf|floatformat:0 }}</td></tr>
-                    <tr><td style="color: var(--text-muted);">Caja de Compensacion</td><td class="text-end">${{ nomina.aporte_caja_compensacion|floatformat:0 }}</td></tr>
-                </table>
-            </div>
+<!-- Aportes patronales -->
+<div class="card patronal-card">
+    <div class="card-header"><h5><i class="bi bi-info-circle me-2 text-info"></i>Aportes del Empleador (Informativos)</h5></div>
+    <div class="card-body" style="padding: 0;">
+        <div style="display: flex;">
+            <table class="table" style="flex: 1; margin: 0;">
+                <tr><td class="td-muted">Salud Empleador</td><td class="td-money" style="text-align: right;">${{ nomina.aporte_salud_empleador|floatformat:0 }}</td></tr>
+                <tr><td class="td-muted">Pension Empleador</td><td style="text-align: right;">${{ nomina.aporte_pension_empleador|floatformat:0 }}</td></tr>
+                <tr><td class="td-muted">ARL</td><td style="text-align: right;">${{ nomina.aporte_arl|floatformat:0 }}</td></tr>
+            </table>
+            <table class="table" style="flex: 1; margin: 0; border-left: 1px solid var(--border-light);">
+                <tr><td class="td-muted">SENA</td><td style="text-align: right;">${{ nomina.aporte_sena|floatformat:0 }}</td></tr>
+                <tr><td class="td-muted">ICBF</td><td style="text-align: right;">${{ nomina.aporte_icbf|floatformat:0 }}</td></tr>
+                <tr><td class="td-muted">Caja Compensacion</td><td style="text-align: right;">${{ nomina.aporte_caja_compensacion|floatformat:0 }}</td></tr>
+            </table>
         </div>
     </div>
 </div>
 
-<div class="mt-3" style="font-size: 12px; color: var(--text-muted);">
-    Liquidado el {{ nomina.liquidado_en|date:"d M Y H:i" }} por {{ nomina.liquidado_por }}
-</div>
+<p style="font-size: 11px; color: var(--text-light); margin-top: 12px;">Liquidado el {{ nomina.liquidado_en|date:"d M Y H:i" }} por {{ nomina.liquidado_por }}</p>
 {% endblock %}

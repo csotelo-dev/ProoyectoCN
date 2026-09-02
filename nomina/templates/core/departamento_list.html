@@ -2,20 +2,28 @@
 {% block title %}Departamentos — SIRH{% endblock %}
 {% block content %}
 <div class="page-header">
-    <h2>Departamentos</h2>
-    {% if perms.core.add_departamento %}<a href="{% url 'departamento-create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Nuevo</a>{% endif %}
+    <div>
+        <h2>Departamentos</h2>
+        <p class="page-subtitle">Areas organizacionales de la empresa</p>
+    </div>
+    {% if perms.core.add_departamento %}<a href="{% url 'departamento-create' %}" class="btn btn-primary"><i class="bi bi-plus"></i> Nuevo</a>{% endif %}
 </div>
 <div class="card">
     <div class="table-responsive">
         <table class="table">
-            <thead><tr><th>Nombre</th><th>Descripcion</th><th>Estado</th><th style="width: 100px;">Acciones</th></tr></thead>
+            <thead><tr><th>Nombre</th><th>Descripcion</th><th style="width: 80px;">Estado</th><th style="width: 80px; text-align: right;">Acciones</th></tr></thead>
             <tbody>
             {% for dep in departamentos %}
             <tr>
-                <td style="font-weight: 500;">{{ dep.nombre }}</td>
-                <td style="color: var(--text-secondary);">{{ dep.descripcion|truncatewords:12 }}</td>
+                <td class="td-primary">{{ dep.nombre }}</td>
+                <td class="td-muted">{{ dep.descripcion|default:"—" }}</td>
                 <td>{% if dep.activo %}<span class="badge bg-success">Activo</span>{% else %}<span class="badge bg-secondary">Inactivo</span>{% endif %}</td>
-                <td>{% if perms.core.change_departamento %}<a href="{% url 'departamento-update' dep.pk %}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>{% endif %}</td>
+                <td style="text-align: right;">
+                    <div style="display: flex; gap: 4px; justify-content: flex-end;">
+                        {% if perms.core.change_departamento %}<a href="{% url 'departamento-update' dep.pk %}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>{% endif %}
+                        {% if perms.core.delete_departamento %}<a href="{% url 'departamento-delete' dep.pk %}" class="btn btn-sm btn-outline-primary" style="color: var(--danger); border-color: var(--danger);"><i class="bi bi-trash"></i></a>{% endif %}
+                    </div>
+                </td>
             </tr>
             {% empty %}
             <tr><td colspan="4"><div class="empty-state"><i class="bi bi-building"></i><p>No hay departamentos.</p></div></td></tr>

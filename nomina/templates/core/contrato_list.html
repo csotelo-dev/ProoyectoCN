@@ -2,23 +2,26 @@
 {% block title %}Contratos — SIRH{% endblock %}
 {% block content %}
 <div class="page-header">
-    <h2>Contratos</h2>
-    {% if perms.core.add_contrato %}<a href="{% url 'contrato-create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Nuevo</a>{% endif %}
+    <div>
+        <h2>Contratos</h2>
+        <p class="page-subtitle">Vinculaciones laborales activas e inactivas</p>
+    </div>
+    {% if perms.core.add_contrato %}<a href="{% url 'contrato-create' %}" class="btn btn-primary"><i class="bi bi-plus"></i> Nuevo</a>{% endif %}
 </div>
 <div class="card">
     <div class="table-responsive">
         <table class="table">
-            <thead><tr><th>Empleado</th><th>Cargo</th><th>Tipo</th><th>Inicio</th><th>Salario</th><th>Estado</th><th style="width: 80px;"></th></tr></thead>
+            <thead><tr><th>Empleado</th><th>Cargo</th><th>Tipo</th><th>Inicio</th><th style="text-align: right;">Salario</th><th style="width: 80px;">Estado</th><th style="width: 60px; text-align: right;"></th></tr></thead>
             <tbody>
             {% for c in contratos %}
             <tr>
-                <td style="font-weight: 500;">{{ c.empleado }}</td>
-                <td>{{ c.cargo.nombre }}</td>
+                <td class="td-primary">{{ c.empleado }}</td>
+                <td class="td-muted">{{ c.cargo.nombre }}</td>
                 <td><span class="badge bg-info">{{ c.get_tipo_contrato_display }}</span></td>
                 <td>{{ c.fecha_inicio|date:"d M Y" }}</td>
-                <td style="font-weight: 600;">${{ c.salario_base|floatformat:0 }}</td>
+                <td class="td-money" style="text-align: right;">${{ c.salario_base|floatformat:0 }}</td>
                 <td>{% if c.activo %}<span class="badge bg-success">Activo</span>{% else %}<span class="badge bg-secondary">Inactivo</span>{% endif %}</td>
-                <td>{% if perms.core.change_contrato %}<a href="{% url 'contrato-update' c.pk %}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>{% endif %}</td>
+                <td style="text-align: right;">{% if perms.core.change_contrato %}<a href="{% url 'contrato-update' c.pk %}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>{% endif %}</td>
             </tr>
             {% empty %}<tr><td colspan="7"><div class="empty-state"><i class="bi bi-file-earmark-text"></i><p>No hay contratos.</p></div></td></tr>{% endfor %}
             </tbody>

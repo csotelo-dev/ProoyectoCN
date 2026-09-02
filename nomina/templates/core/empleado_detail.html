@@ -2,66 +2,65 @@
 {% block title %}{{ empleado.nombre_completo }} — SIRH{% endblock %}
 {% block content %}
 <div class="page-header">
-    <h2>{{ empleado.nombre_completo }}</h2>
-    <div class="d-flex gap-2">
-        {% if empleado.activo %}<span class="badge bg-success" style="font-size: 13px; padding: 8px 14px;">Activo</span>{% else %}<span class="badge bg-secondary" style="font-size: 13px; padding: 8px 14px;">Inactivo</span>{% endif %}
-        {% if perms.core.change_empleado %}
-        <a href="{% url 'empleado-update' empleado.pk %}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil"></i> Editar</a>
-        {% endif %}
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px;">{{ empleado.primer_nombre|first }}{{ empleado.primer_apellido|first }}</div>
+        <div>
+            <h2 style="margin: 0;">{{ empleado.nombre_completo }}</h2>
+            <p class="page-subtitle">{{ empleado.get_tipo_documento_display }} {{ empleado.numero_documento }}</p>
+        </div>
+    </div>
+    <div style="display: flex; gap: 8px; align-items: center;">
+        {% if empleado.activo %}<span class="badge bg-success" style="padding: 6px 12px;">Activo</span>{% else %}<span class="badge bg-secondary" style="padding: 6px 12px;">Inactivo</span>{% endif %}
+        {% if perms.core.change_empleado %}<a href="{% url 'empleado-update' empleado.pk %}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i> Editar</a>{% endif %}
+        <a href="{% url 'empleado-list' %}" class="btn btn-sm btn-secondary"><i class="bi bi-arrow-left"></i> Volver</a>
     </div>
 </div>
 
-<div class="row g-4">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header"><h5><i class="bi bi-person me-2" style="color: var(--primary);"></i>Datos Personales</h5></div>
-            <div class="card-body">
-                <table class="table table-borderless mb-0" style="font-size: 13.5px;">
-                    <tr><td style="color: var(--text-muted); width: 40%;">Documento</td><td style="font-weight: 500;">{{ empleado.get_tipo_documento_display }} {{ empleado.numero_documento }}</td></tr>
-                    <tr><td style="color: var(--text-muted);">Nacimiento</td><td>{{ empleado.fecha_nacimiento|date:"d M Y" }}</td></tr>
-                    <tr><td style="color: var(--text-muted);">Direccion</td><td>{{ empleado.direccion }}</td></tr>
-                    <tr><td style="color: var(--text-muted);">Telefono</td><td>{{ empleado.telefono }}</td></tr>
-                    <tr><td style="color: var(--text-muted);">Email</td><td>{{ empleado.email_personal|default:"—" }}</td></tr>
-                </table>
-            </div>
+<div style="display: flex; gap: 16px; margin-bottom: 16px;">
+    <div class="card" style="flex: 1;">
+        <div class="card-header"><h5><i class="bi bi-person me-2 text-primary"></i>Datos Personales</h5></div>
+        <div class="card-body" style="padding: 0;">
+            <table class="table" style="margin: 0;">
+                <tr><td class="td-muted" style="width: 40%;">Nacimiento</td><td class="td-primary">{{ empleado.fecha_nacimiento|date:"d M Y" }}</td></tr>
+                <tr><td class="td-muted">Direccion</td><td>{{ empleado.direccion }}</td></tr>
+                <tr><td class="td-muted">Telefono</td><td>{{ empleado.telefono }}</td></tr>
+                <tr><td class="td-muted">Email</td><td>{{ empleado.email_personal|default:"—" }}</td></tr>
+            </table>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header"><h5><i class="bi bi-shield-plus me-2" style="color: var(--success);"></i>Seguridad Social</h5></div>
-            <div class="card-body">
-                <table class="table table-borderless mb-0" style="font-size: 13.5px;">
-                    <tr><td style="color: var(--text-muted); width: 40%;">EPS</td><td style="font-weight: 500;">{{ empleado.eps }}</td></tr>
-                    <tr><td style="color: var(--text-muted);">Pension</td><td>{{ empleado.fondo_pension }}</td></tr>
-                    <tr><td style="color: var(--text-muted);">Cesantias</td><td>{{ empleado.fondo_cesantias|default:"—" }}</td></tr>
-                    <tr><td style="color: var(--text-muted);">Caja Comp.</td><td>{{ empleado.caja_compensacion|default:"—" }}</td></tr>
-                </table>
-            </div>
+    <div class="card" style="flex: 1;">
+        <div class="card-header"><h5><i class="bi bi-shield-plus me-2 text-accent"></i>Seguridad Social</h5></div>
+        <div class="card-body" style="padding: 0;">
+            <table class="table" style="margin: 0;">
+                <tr><td class="td-muted" style="width: 40%;">EPS</td><td class="td-primary">{{ empleado.eps }}</td></tr>
+                <tr><td class="td-muted">Pension</td><td>{{ empleado.fondo_pension }}</td></tr>
+                <tr><td class="td-muted">Cesantias</td><td>{{ empleado.fondo_cesantias|default:"—" }}</td></tr>
+                <tr><td class="td-muted">Caja Comp.</td><td>{{ empleado.caja_compensacion|default:"—" }}</td></tr>
+            </table>
         </div>
     </div>
 </div>
 
-<div class="card mt-4">
-    <div class="card-header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h5><i class="bi bi-file-earmark-text me-2" style="color: var(--secondary);"></i>Contratos</h5>
-        </div>
+<div class="card">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <h5><i class="bi bi-file-earmark-text me-2 text-info"></i>Contratos</h5>
+        {% if perms.core.add_contrato %}<a href="{% url 'contrato-create' %}" class="btn btn-sm btn-outline-primary"><i class="bi bi-plus"></i> Nuevo</a>{% endif %}
     </div>
     <div class="table-responsive">
         <table class="table">
-            <thead><tr><th>Cargo</th><th>Tipo</th><th>Inicio</th><th>Fin</th><th>Salario</th><th>Estado</th></tr></thead>
+            <thead><tr><th>Cargo</th><th>Tipo</th><th>Inicio</th><th>Fin</th><th style="text-align: right;">Salario</th><th style="width: 80px;">Estado</th></tr></thead>
             <tbody>
             {% for c in contratos %}
             <tr>
-                <td style="font-weight: 500;">{{ c.cargo.nombre }}</td>
+                <td class="td-primary">{{ c.cargo.nombre }}</td>
                 <td><span class="badge bg-info">{{ c.get_tipo_contrato_display }}</span></td>
                 <td>{{ c.fecha_inicio|date:"d M Y" }}</td>
                 <td>{{ c.fecha_fin|date:"d M Y"|default:"Indefinido" }}</td>
-                <td style="font-weight: 600;">${{ c.salario_base|floatformat:0 }}</td>
+                <td class="td-money" style="text-align: right;">${{ c.salario_base|floatformat:0 }}</td>
                 <td>{% if c.activo %}<span class="badge bg-success">Activo</span>{% else %}<span class="badge bg-secondary">Inactivo</span>{% endif %}</td>
             </tr>
             {% empty %}
-            <tr><td colspan="6"><div class="empty-state"><i class="bi bi-file-earmark-plus"></i><p>Sin contratos registrados.</p></div></td></tr>
+            <tr><td colspan="6"><div class="empty-state" style="padding: 24px;"><i class="bi bi-file-earmark-plus"></i><p>Sin contratos registrados.</p></div></td></tr>
             {% endfor %}
             </tbody>
         </table>

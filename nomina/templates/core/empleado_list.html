@@ -2,57 +2,59 @@
 {% block title %}Empleados — SIRH{% endblock %}
 {% block content %}
 <div class="page-header">
-    <h2>Empleados</h2>
-    {% if perms.core.add_empleado %}
-    <a href="{% url 'empleado-create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Nuevo Empleado</a>
-    {% endif %}
+    <div>
+        <h2>Empleados</h2>
+        <p class="page-subtitle">{{ empleados.paginator.count|default:empleados|length }} registros</p>
+    </div>
+    <div style="display: flex; gap: 8px; align-items: center;">
+        <form method="get" style="display: flex; gap: 6px;">
+            <input type="text" name="q" value="{{ request.GET.q }}" class="form-control" style="width: 260px;" placeholder="Buscar nombre o documento...">
+            <button class="btn btn-primary btn-sm">Buscar</button>
+        </form>
+        {% if perms.core.add_empleado %}
+        <a href="{% url 'empleado-create' %}" class="btn btn-primary"><i class="bi bi-plus"></i> Nuevo</a>
+        {% endif %}
+    </div>
 </div>
 
 <div class="card">
-    <div class="card-body pb-0">
-        <form method="get" class="row g-2 mb-3">
-            <div class="col-md-4">
-                <div class="input-group">
-                    <span class="input-group-text" style="background: #f8fafc; border-right:0;"><i class="bi bi-search" style="color: var(--text-muted);"></i></span>
-                    <input type="text" name="q" value="{{ request.GET.q }}" class="form-control" style="border-left:0;" placeholder="Buscar por nombre o documento...">
-                </div>
-            </div>
-            <div class="col-auto"><button class="btn btn-primary">Buscar</button></div>
-        </form>
-    </div>
     <div class="table-responsive">
         <table class="table">
             <thead>
-                <tr><th>Documento</th><th>Nombre</th><th>EPS</th><th>Estado</th><th style="width: 150px;">Acciones</th></tr>
+                <tr>
+                    <th style="width: 180px;">Documento</th>
+                    <th>Nombre</th>
+                    <th>EPS</th>
+                    <th style="width: 90px;">Estado</th>
+                    <th style="width: 120px; text-align: right;">Acciones</th>
+                </tr>
             </thead>
             <tbody>
             {% for emp in empleados %}
             <tr>
                 <td><span class="badge bg-secondary">{{ emp.get_tipo_documento_display }}</span> {{ emp.numero_documento }}</td>
-                <td style="font-weight: 500;">{{ emp.nombre_completo }}</td>
-                <td>{{ emp.eps }}</td>
+                <td class="td-primary">{{ emp.nombre_completo }}</td>
+                <td class="td-muted">{{ emp.eps }}</td>
                 <td>{% if emp.activo %}<span class="badge bg-success">Activo</span>{% else %}<span class="badge bg-secondary">Inactivo</span>{% endif %}</td>
-                <td>
-                    <a href="{% url 'empleado-detail' emp.pk %}" class="btn btn-sm btn-outline-primary">Ver</a>
-                    {% if perms.core.change_empleado %}
-                    <a href="{% url 'empleado-update' emp.pk %}" class="btn btn-sm btn-outline-warning">Editar</a>
-                    {% endif %}
+                <td style="text-align: right;">
+                    <div style="display: flex; gap: 4px; justify-content: flex-end;">
+                        <a href="{% url 'empleado-detail' emp.pk %}" class="btn btn-sm btn-outline-primary">Ver</a>
+                        {% if perms.core.change_empleado %}<a href="{% url 'empleado-update' emp.pk %}" class="btn btn-sm btn-outline-warning">Editar</a>{% endif %}
+                    </div>
                 </td>
             </tr>
             {% empty %}
-            <tr><td colspan="5">
-                <div class="empty-state"><i class="bi bi-person-plus"></i><p>No hay empleados registrados.</p></div>
-            </td></tr>
+            <tr><td colspan="5"><div class="empty-state"><i class="bi bi-person-plus"></i><p>No hay empleados registrados.</p></div></td></tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
     {% if is_paginated %}
-    <div class="card-body pt-0">
-        <nav><ul class="pagination justify-content-center mb-0">
-            {% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>{% endif %}
+    <div style="display: flex; justify-content: center; padding: 12px;">
+        <nav><ul class="pagination mb-0">
+            {% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Anterior</a></li>{% endif %}
             <li class="page-item active"><a class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</a></li>
-            {% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a></li>{% endif %}
+            {% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Siguiente</a></li>{% endif %}
         </ul></nav>
     </div>
     {% endif %}

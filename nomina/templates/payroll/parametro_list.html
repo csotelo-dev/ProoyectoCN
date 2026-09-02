@@ -2,21 +2,24 @@
 {% block title %}Parametros — SIRH{% endblock %}
 {% block content %}
 <div class="page-header">
-    <h2>Parametros de Nomina</h2>
-    {% if perms.payroll.add_parametronomina %}<a href="{% url 'parametro-create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Nuevo Año</a>{% endif %}
+    <div>
+        <h2>Parametros de Nomina</h2>
+        <p class="page-subtitle">Valores legales por año fiscal</p>
+    </div>
+    {% if perms.payroll.add_parametronomina %}<a href="{% url 'parametro-create' %}" class="btn btn-primary"><i class="bi bi-plus"></i> Nuevo Año</a>{% endif %}
 </div>
 <div class="card">
     <div class="table-responsive">
         <table class="table">
-            <thead><tr><th>Año</th><th>SMMLV</th><th>Aux. Transporte</th><th>Salud Emp.</th><th>Pension Emp.</th></tr></thead>
+            <thead><tr><th style="width: 80px;">Año</th><th style="text-align: right;">SMMLV</th><th style="text-align: right;">Aux. Transporte</th><th style="text-align: right;">Salud Emp.</th><th style="text-align: right;">Pension Emp.</th></tr></thead>
             <tbody>
             {% for p in parametros %}
             <tr>
-                <td style="font-weight: 700;">{{ p.anio }}</td>
-                <td style="font-weight: 600;">${{ p.smmlv|floatformat:0 }}</td>
-                <td>${{ p.auxilio_transporte|floatformat:0 }}</td>
-                <td><span class="badge bg-info">{{ p.porcentaje_salud_empleado }}%</span></td>
-                <td><span class="badge bg-info">{{ p.porcentaje_pension_empleado }}%</span></td>
+                <td class="td-primary">{{ p.anio }}</td>
+                <td class="td-money" style="text-align: right;">${{ p.smmlv|floatformat:0 }}</td>
+                <td style="text-align: right;">${{ p.auxilio_transporte|floatformat:0 }}</td>
+                <td style="text-align: right;">{{ p.porcentaje_salud_empleado }}%</td>
+                <td style="text-align: right;">{{ p.porcentaje_pension_empleado }}%</td>
             </tr>
             {% empty %}<tr><td colspan="5"><div class="empty-state"><i class="bi bi-sliders2"></i><p>No hay parametros configurados.</p></div></td></tr>{% endfor %}
             </tbody>

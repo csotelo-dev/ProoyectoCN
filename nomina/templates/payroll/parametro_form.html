@@ -1,12 +1,37 @@
 {% extends "base.html" %}
 {% block title %}Parametros — SIRH{% endblock %}
 {% block content %}
-<div class="page-header"><h2>Parametros de Nomina</h2></div>
-<div class="card">
+<div class="page-header">
+    <h2>Parametros de Nomina</h2>
+    <a href="{% url 'parametro-list' %}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Volver</a>
+</div>
+<div class="card" style="max-width: 700px;">
     <div class="card-body">
         <form method="post">{% csrf_token %}
-            <div class="row">{% for field in form %}<div class="col-md-4 mb-3"><label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>{{ field }}{% if field.help_text %}<div class="form-text" style="font-size: 11px;">{{ field.help_text }}</div>{% endif %}{% if field.errors %}<div class="text-danger" style="font-size: 12px;">{{ field.errors.0 }}</div>{% endif %}</div>{% endfor %}</div>
-            <div class="d-flex gap-2 mt-2"><button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Guardar</button><a href="{% url 'parametro-list' %}" class="btn btn-secondary">Cancelar</a></div>
+            <div style="display: flex; gap: 12px; margin-bottom: 14px;">
+                <div style="flex: 1;"><label class="form-label">Año <span class="text-danger">*</span></label>{{ form.anio }}</div>
+                <div style="flex: 1;"><label class="form-label">SMMLV <span class="text-danger">*</span></label>{{ form.smmlv }}</div>
+                <div style="flex: 1;"><label class="form-label">Aux. Transporte <span class="text-danger">*</span></label>{{ form.auxilio_transporte }}</div>
+            </div>
+            <div style="display: flex; gap: 12px; margin-bottom: 14px;">
+                <div style="flex: 1;"><label class="form-label">Tope Aux. (SMMLV)</label>{{ form.tope_auxilio_transporte_smmlv }}</div>
+                <div style="flex: 1;"><label class="form-label">Salud Empleado %</label>{{ form.porcentaje_salud_empleado }}</div>
+                <div style="flex: 1;"><label class="form-label">Salud Empleador %</label>{{ form.porcentaje_salud_empleador }}</div>
+            </div>
+            <div style="display: flex; gap: 12px; margin-bottom: 14px;">
+                <div style="flex: 1;"><label class="form-label">Pension Empleado %</label>{{ form.porcentaje_pension_empleado }}</div>
+                <div style="flex: 1;"><label class="form-label">Pension Empleador %</label>{{ form.porcentaje_pension_empleador }}</div>
+                <div style="flex: 1;"><label class="form-label">ARL Base %</label>{{ form.porcentaje_arl_base }}</div>
+            </div>
+            <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                <div style="flex: 1;"><label class="form-label">SENA %</label>{{ form.porcentaje_sena }}</div>
+                <div style="flex: 1;"><label class="form-label">ICBF %</label>{{ form.porcentaje_icbf }}</div>
+                <div style="flex: 1;"><label class="form-label">Caja Comp. %</label>{{ form.porcentaje_caja_compensacion }}</div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Guardar</button>
+                <a href="{% url 'parametro-list' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
         </form>
     </div>
 </div>
