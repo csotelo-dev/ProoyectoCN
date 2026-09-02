@@ -8,12 +8,12 @@
 <div class="card" style="max-width: 560px;">
     <div class="card-body">
         <form method="post">{% csrf_token %}
-            <div style="margin-bottom: 14px;"><label class="form-label">Nombre del Periodo <span class="text-danger">*</span></label>{{ form.nombre }}</div>
-            <div style="display: flex; gap: 12px; margin-bottom: 14px;">
+            <div class="field-group"><label class="form-label">Nombre del Periodo <span class="text-danger">*</span></label>{{ form.nombre }}</div>
+            <div class="field-row">
                 <div style="flex: 1;"><label class="form-label">Fecha Inicio <span class="text-danger">*</span></label>{{ form.fecha_inicio }}</div>
                 <div style="flex: 1;"><label class="form-label">Fecha Fin <span class="text-danger">*</span></label>{{ form.fecha_fin }}</div>
             </div>
-            <div style="margin-bottom: 16px;"><label class="form-label">Parametros de Nomina <span class="text-danger">*</span></label>{{ form.parametros }}</div>
+            <div class="field-group"><label class="form-label">Parametros de Nomina <span class="text-danger">*</span></label>{{ form.parametros }}</div>
             <div style="display: flex; gap: 8px;">
                 <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Crear Periodo</button>
                 <a href="{% url 'periodo-list' %}" class="btn btn-secondary">Cancelar</a>

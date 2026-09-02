@@ -8,17 +8,17 @@
 <div class="card" style="max-width: 700px;">
     <div class="card-body">
         <form method="post">{% csrf_token %}
-            <div style="display: flex; gap: 12px; margin-bottom: 14px;">
+            <div class="field-row">
                 <div style="flex: 1;"><label class="form-label">Año <span class="text-danger">*</span></label>{{ form.anio }}</div>
                 <div style="flex: 1;"><label class="form-label">SMMLV <span class="text-danger">*</span></label>{{ form.smmlv }}</div>
                 <div style="flex: 1;"><label class="form-label">Aux. Transporte <span class="text-danger">*</span></label>{{ form.auxilio_transporte }}</div>
             </div>
-            <div style="display: flex; gap: 12px; margin-bottom: 14px;">
+            <div class="field-row">
                 <div style="flex: 1;"><label class="form-label">Tope Aux. (SMMLV)</label>{{ form.tope_auxilio_transporte_smmlv }}</div>
                 <div style="flex: 1;"><label class="form-label">Salud Empleado %</label>{{ form.porcentaje_salud_empleado }}</div>
                 <div style="flex: 1;"><label class="form-label">Salud Empleador %</label>{{ form.porcentaje_salud_empleador }}</div>
             </div>
-            <div style="display: flex; gap: 12px; margin-bottom: 14px;">
+            <div class="field-row">
                 <div style="flex: 1;"><label class="form-label">Pension Empleado %</label>{{ form.porcentaje_pension_empleado }}</div>
                 <div style="flex: 1;"><label class="form-label">Pension Empleador %</label>{{ form.porcentaje_pension_empleador }}</div>
                 <div style="flex: 1;"><label class="form-label">ARL Base %</label>{{ form.porcentaje_arl_base }}</div>

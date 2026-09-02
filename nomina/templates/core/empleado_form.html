@@ -11,17 +11,17 @@
 
 <form method="post">
     {% csrf_token %}
-    <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+    <div class="field-row">
         <!-- Columna izquierda -->
         <div style="flex: 1; display: flex; flex-direction: column; gap: 16px;">
             <div class="card">
                 <div class="card-header"><h5><i class="bi bi-person-vcard me-2 text-primary"></i>Identificacion</h5></div>
                 <div class="card-body">
-                    <div style="display: flex; gap: 12px; margin-bottom: 12px;">
+                    <div class="field-row">
                         <div style="flex: 1;"><label class="form-label">Tipo Doc. <span class="text-danger">*</span></label>{{ form.tipo_documento }}</div>
-                        <div style="flex: 2;"><label class="form-label">Numero <span class="text-danger">*</span></label>{{ form.numero_documento }}</div>
+                        <div class="field-2x"><label class="form-label">Numero <span class="text-danger">*</span></label>{{ form.numero_documento }}</div>
                     </div>
-                    <div style="display: flex; gap: 12px;">
+                    <div class="field-row">
                         <div style="flex: 1;"><label class="form-label">Nacimiento <span class="text-danger">*</span></label>{{ form.fecha_nacimiento }}</div>
                         <div style="flex: 1; display: flex; align-items: flex-end; padding-bottom: 6px;">{{ form.activo }} <label class="form-check-label ms-2" style="font-size: 13px;">Empleado activo</label></div>
                     </div>
@@ -30,11 +30,11 @@
             <div class="card">
                 <div class="card-header"><h5><i class="bi bi-person me-2 text-info"></i>Datos Personales</h5></div>
                 <div class="card-body">
-                    <div style="display: flex; gap: 12px; margin-bottom: 12px;">
+                    <div class="field-row">
                         <div style="flex: 1;"><label class="form-label">Primer Nombre <span class="text-danger">*</span></label>{{ form.primer_nombre }}</div>
                         <div style="flex: 1;"><label class="form-label">Segundo Nombre</label>{{ form.segundo_nombre }}</div>
                     </div>
-                    <div style="display: flex; gap: 12px;">
+                    <div class="field-row">
                         <div style="flex: 1;"><label class="form-label">Primer Apellido <span class="text-danger">*</span></label>{{ form.primer_apellido }}</div>
                         <div style="flex: 1;"><label class="form-label">Segundo Apellido</label>{{ form.segundo_apellido }}</div>
                     </div>
@@ -46,8 +46,8 @@
             <div class="card">
                 <div class="card-header"><h5><i class="bi bi-telephone me-2 text-accent"></i>Contacto</h5></div>
                 <div class="card-body">
-                    <div style="margin-bottom: 12px;"><label class="form-label">Direccion <span class="text-danger">*</span></label>{{ form.direccion }}</div>
-                    <div style="display: flex; gap: 12px;">
+                    <div class="field-group"><label class="form-label">Direccion <span class="text-danger">*</span></label>{{ form.direccion }}</div>
+                    <div class="field-row">
                         <div style="flex: 1;"><label class="form-label">Telefono <span class="text-danger">*</span></label>{{ form.telefono }}</div>
                         <div style="flex: 1;"><label class="form-label">Email Personal</label>{{ form.email_personal }}</div>
                     </div>
@@ -56,11 +56,11 @@
             <div class="card">
                 <div class="card-header"><h5><i class="bi bi-shield-plus me-2" style="color: var(--warning);"></i>Seguridad Social</h5></div>
                 <div class="card-body">
-                    <div style="display: flex; gap: 12px; margin-bottom: 12px;">
+                    <div class="field-row">
                         <div style="flex: 1;"><label class="form-label">EPS <span class="text-danger">*</span></label>{{ form.eps }}</div>
                         <div style="flex: 1;"><label class="form-label">Fondo Pension <span class="text-danger">*</span></label>{{ form.fondo_pension }}</div>
                     </div>
-                    <div style="display: flex; gap: 12px;">
+                    <div class="field-row">
                         <div style="flex: 1;"><label class="form-label">Cesantias</label>{{ form.fondo_cesantias }}</div>
                         <div style="flex: 1;"><label class="form-label">Caja Compensacion</label>{{ form.caja_compensacion }}</div>
                     </div>
