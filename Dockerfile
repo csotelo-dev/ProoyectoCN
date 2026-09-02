@@ -29,8 +29,10 @@ COPY --from=builder /install /usr/local
 # Copiar código fuente
 COPY nomina/ .
 
-# Recolectar archivos estáticos
-RUN DJANGO_SECRET_KEY=build-placeholder python manage.py collectstatic --noinput 2>/dev/null || true
+# Crear directorio de estáticos y asignar permisos
+RUN mkdir -p /app/staticfiles && \
+    DJANGO_SECRET_KEY=build-placeholder python manage.py collectstatic --noinput 2>/dev/null || true && \
+    chown -R appuser:appuser /app
 
 # Cambiar a usuario no-root
 USER appuser
